@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      xml:lang="en"
+      lang="en"
+      i18n:domain="collective.mcp">
+  <metal:styleslot fill-slot="style_slot">
+  </metal:styleslot>
+  <metal:javascript_head fill-slot="javascript_head_slot">
+  </metal:javascript_head>
+  <body>
+    <div metal:fill-slot="main">
+      <div class="displayTitle">
+        <h1 i18n:translate="head_control_panel">Control panel</h1>
+        
+        <div id="control_panel_container"
+             tal:define="sub_page nocall: view/sub_page|nothing;
+                         sub_page_rendered view/sub_page_rendered|nothing;
+                         categories view/categories|nothing">
+
+          <ul id="control_panel_header">
+            <li tal:attributes="class python: 'control_panel_home first_item%s' % (sub_page and ' item' or ' last_item')">
+              <a tal:attributes="href view/base_url"
+                 i18n:translate="label_home">Home
+              </a>
+            </li>
+            <li tal:condition="python: sub_page"
+                class="last_item">
+              <a tal:attributes="href sub_page/get_base_url"
+                 tal:content="sub_page/title" />
+            </li>
+          </ul>
+
+          <div id="control_panel_content">
+            <span tal:condition="sub_page_rendered"
+                  tal:replace="structure sub_page_rendered" />
+
+            <tal:block tal:condition="not: sub_page_rendered">
+              <ul tal:condition="categories">
+                <li tal:repeat="category categories">
+                  <span tal:content="category/category/title" />
+                  <ul>
+                    <li tal:repeat="page category/pages">
+                      <a tal:attributes="href python: page.make_link(page.default_mode)">
+                        <img tal:condition="page/icon"
+                             tal:attributes="src page/icon;
+                                             alt page/title" />
+                        <span tal:condition="not: page/icon"
+                              tal:content="page/title" />
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <p tal:condition="not: categories"
+                 i18n:translate="msg_no_pages">
+                There is nothing you can manage.
+              </p>
+            </tal:block>
+          </div>
+        </div>
+      </div>
+      <br class="clear" />
+    </div>
+  </body>
+</html>

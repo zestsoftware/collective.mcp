@@ -7,5 +7,5 @@
   <five:registerPackage package="." initialize=".initialize" />
 
   <!-- -*- extra stuff goes here -*- -->
-  
+  <include package=".browser" />
 </configure>
