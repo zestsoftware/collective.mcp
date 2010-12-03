@@ -53,7 +53,7 @@ class MacControlPanel(BrowserView):
             
             # The is a special mode for sub-page called back.
             # In this mode, the page is not shown but the main menu.
-            if not page.is_back_mode:
+            if page.mode != 'back':
                 self.sub_page = page
                 self.sub_page_rendered = rendered
                 return self.index()

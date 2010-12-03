@@ -37,6 +37,30 @@
             <span tal:condition="sub_page_rendered"
                   tal:replace="structure sub_page_rendered" />
 
+            <div id="objects_list"
+                 tal:condition="sub_page/multi_objects|nothing">
+              <ul class="objects">
+                <li tal:repeat="obj sub_page/list_objects">
+                  <a tal:attributes="href python: sub_page.make_link(sub_page.multi_objects_default_mode, {'obj_id': obj['id']})"
+                     tal:content="obj/title" />
+                </li>
+              </ul>
+              <ul class="buttons"
+                  tal:define="obj_id python: view.request.get('obj_id', None)">
+                <li tal:repeat="button sub_page/multi_objects_buttons">
+                  <a tal:condition="python: button == 'add'"
+                     tal:attributes="href sub_page/add_link">
+                    +
+                  </a>
+                  <a tal:condition="python: button == 'delete'"
+                     tal:define="make_link_extra python: obj_id and {'obj_id': obj_id} or None"
+                     tal:attributes="href python: sub_page.make_link('delete', make_link_extra)">
+                    -
+                  </a>
+                </li>
+              </ul>
+            </div>
+
             <tal:block tal:condition="not: sub_page_rendered">
               <ul tal:condition="categories">
                 <li tal:repeat="category categories">
