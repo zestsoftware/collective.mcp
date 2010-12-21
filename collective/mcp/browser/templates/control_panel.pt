@@ -6,87 +6,103 @@
       xml:lang="en"
       lang="en"
       i18n:domain="collective.mcp">
+  <metal:block fill-slot="top_slot"
+               tal:define="dummy python:request.set('disable_border', 0)" />
   <metal:styleslot fill-slot="style_slot">
   </metal:styleslot>
   <metal:javascript_head fill-slot="javascript_head_slot">
   </metal:javascript_head>
   <body>
     <div metal:fill-slot="main">
-      <div class="displayTitle">
-        <h1 i18n:translate="head_control_panel">Control panel</h1>
+      <div id="control_panel_container"
+           tal:define="sub_page nocall: view/sub_page|nothing;
+                       sub_page_rendered view/sub_page_rendered|nothing;
+                       categories view/categories|nothing">
         
-        <div id="control_panel_container"
-             tal:define="sub_page nocall: view/sub_page|nothing;
-                         sub_page_rendered view/sub_page_rendered|nothing;
-                         categories view/categories|nothing">
-
-          <ul id="control_panel_header">
-            <li tal:attributes="class python: 'control_panel_home first_item%s' % (sub_page and ' item' or ' last_item')">
-              <a tal:attributes="href view/base_url"
-                 i18n:translate="label_home">Home
-              </a>
-            </li>
-            <li tal:condition="python: sub_page"
-                class="last_item">
-              <a tal:attributes="href sub_page/get_base_url"
-                 tal:content="sub_page/title" />
-            </li>
-          </ul>
-
-          <div id="control_panel_content">
-            <span tal:condition="sub_page_rendered"
-                  tal:replace="structure sub_page_rendered" />
-
-            <div id="objects_list"
-                 tal:condition="sub_page/multi_objects|nothing">
-              <ul class="objects">
-                <li tal:repeat="obj sub_page/list_objects">
+        <ul id="control_panel_header">
+          <li tal:attributes="class python: 'control_panel_home item first_item%s' % (sub_page and ' ' or ' last_item')">
+            <a tal:attributes="href view/base_url">
+              <span i18n:translate="label_home">Home</span>
+            </a>
+          </li>
+          <li tal:condition="python: sub_page"
+              class="item last_item">
+            <a tal:attributes="href python: sub_page.make_link(sub_page.default_mode)">
+              <span tal:content="sub_page/title" />
+            </a>
+          </li>
+        </ul>
+        
+        <div id="control_panel_content">
+          <div tal:condition="sub_page_rendered"
+               id="subpage"
+               tal:define="multi_objects sub_page/multi_objects|nothing"
+               tal:attributes="class python: multi_objects and 'right_column' or None"
+               tal:content="structure sub_page_rendered" />
+          
+          <div id="objects_list"
+               tal:condition="sub_page/multi_objects|nothing">
+            <ul class="objects"
+                tal:define="current_id sub_page/current_object_id">
+              <tal:block tal:repeat="obj sub_page/list_objects">
+                <li tal:attributes="class python: str(obj['id']) == str(current_id) and 'current' or None">
                   <a tal:attributes="href python: sub_page.make_link(sub_page.multi_objects_default_mode, {'obj_id': obj['id']})"
                      tal:content="obj/title" />
                 </li>
-              </ul>
-              <ul class="buttons"
-                  tal:define="obj_id python: view.request.get('obj_id', None)">
-                <li tal:repeat="button sub_page/multi_objects_buttons">
-                  <a tal:condition="python: button == 'add'"
-                     tal:attributes="href sub_page/add_link">
-                    +
-                  </a>
-                  <a tal:condition="python: button == 'delete'"
-                     tal:define="make_link_extra python: obj_id and {'obj_id': obj_id} or None"
-                     tal:attributes="href python: sub_page.make_link('delete', make_link_extra)">
-                    -
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <tal:block tal:condition="not: sub_page_rendered">
-              <ul tal:condition="categories">
-                <li tal:repeat="category categories">
-                  <span tal:content="category/category/title" />
-                  <ul>
-                    <li tal:repeat="page category/pages">
-                      <a tal:attributes="href python: page.make_link(page.default_mode)">
-                        <img tal:condition="page/icon"
-                             tal:attributes="src page/icon;
-                                             alt page/title" />
-                        <span tal:condition="not: page/icon"
-                              tal:content="page/title" />
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-              <p tal:condition="not: categories"
-                 i18n:translate="msg_no_pages">
-                There is nothing you can manage.
-              </p>
-            </tal:block>
+              </tal:block>
+            </ul>
+            <ul class="buttons"
+                tal:define="obj_id python: view.request.get('obj_id', None);
+                            make_link_extra python: obj_id and {'obj_id': obj_id} or None">
+              <li tal:repeat="button sub_page/multi_objects_buttons">
+                <a tal:condition="python: button == 'add'"
+                   tal:attributes="href sub_page/add_link">
+                  +
+                </a>
+                <a tal:condition="python: button == 'delete'"
+                   tal:attributes="href python: sub_page.make_link('delete', make_link_extra)">
+                  -
+                </a>
+              </li>
+              <li tal:repeat="button sub_page/multi_objects_extra_buttons">
+                <a tal:attributes="href python: sub_page.make_link(button['mode'], make_link_extra)"
+                   tal:content="button/title" />
+              </li>
+            </ul>
           </div>
+          <div class="spacer"></div>
+          
+          <tal:block tal:condition="not: sub_page_rendered">
+            <ul tal:condition="categories"
+                class="menu">
+              <li tal:repeat="category categories">
+                <span class="spacer"
+                      tal:content="category/category/title" />
+                <ul tal:define="oddrow repeat/category/odd"
+                    tal:attributes="class python: oddrow and 'odd' or 'even'">
+                  <li tal:repeat="page category/pages">
+                    <a tal:attributes="href python: page.make_link(page.default_mode)">
+                      <img tal:condition="page/icon"
+                           tal:attributes="src page/icon;
+                                           alt page/title" />
+                      <img tal:condition="not: page/icon"
+                           tal:attributes="src python: '%s/mcp_menu_default.png' % context.absolute_url();
+                                           alt page/title" />
+                      <span tal:content="page/title" />
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="spacer"></li>
+            </ul>
+            <p tal:condition="not: categories"
+               i18n:translate="msg_no_pages">
+              There is nothing you can manage.
+            </p>
+          </tal:block>
         </div>
       </div>
-      <br class="clear" />
     </div>
+    <br class="clear" />
   </body>
 </html>

@@ -24,6 +24,20 @@ class ControlPanelPage(MultiModeViewlet):
     # 'delete' mode.
     multi_objects_buttons = ['add', 'delete']
 
+    # A list of buttons that are appended after the default one.
+    # Each button definition is a dictionnary with the following
+    # keys:
+    # - title
+    # - mode
+    multi_objects_extra_buttons = []
+
+    # Before and after can be used to specify the position of the page in the
+    # menu.
+    # The value must correspond to the 'widget_id' attribute of the page that
+    # is used for ordering.
+    before = None
+    after = None
+
     def __call__(self):
         self.on_call()
         return self.index()
@@ -57,8 +71,3 @@ class ControlPanelPage(MultiModeViewlet):
             return objects[0]['id']
 
         return None
-
-    def objects_extra_buttons(self):
-        """ to be defined.
-        """
-        return []
