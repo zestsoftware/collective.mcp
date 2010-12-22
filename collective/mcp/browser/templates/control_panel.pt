@@ -9,8 +9,21 @@
   <metal:block fill-slot="top_slot"
                tal:define="dummy python:request.set('disable_border', 0)" />
   <metal:styleslot fill-slot="style_slot">
+    <tal:block tal:repeat="js_file view/sub_page/extra_js|nothing">
+      <script type="text/javascript"
+              tal:condition="python:exists('portal/%s' % js_file)"
+              tal:attributes="src string:$portal_url/$js_file">
+      </script>
+    </tal:block>
   </metal:styleslot>
   <metal:javascript_head fill-slot="javascript_head_slot">
+    <tal:block tal:repeat="css_file view/sub_page/extra_css|nothing">
+      <style type="text/css"
+             media="all"
+             tal:condition="python:exists('portal/%s' % css_file)"
+             tal:content="structure string:<!-- @import url($portal_url/$css_file); -->">
+      </style>
+    </tal:block>
   </metal:javascript_head>
   <body>
     <div metal:fill-slot="main">

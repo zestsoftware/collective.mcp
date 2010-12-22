@@ -38,6 +38,10 @@ class ControlPanelPage(MultiModeViewlet):
     before = None
     after = None
 
+    # You can define here lists of extra CSS/Javascript files for this page.
+    extra_js = []
+    extra_css = []
+
     def __call__(self):
         self.on_call()
         return self.index()
