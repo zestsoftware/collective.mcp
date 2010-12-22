@@ -2,10 +2,21 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="collective.mcp">
-
   <five:registerPackage package="." initialize=".initialize" />
 
   <!-- -*- extra stuff goes here -*- -->
   <include package=".browser" />
+
+  <cmf:registerDirectory name="collective_mcp"/>
+
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.mcp"
+      directory="profiles/default"
+      description='Extension profile for the custom version of collective.mcp'
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
 </configure>

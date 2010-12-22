@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<object name="portal_skins">
+ <object name="collective_mcp"
+    meta_type="Filesystem Directory View"
+    directory="collective.mcp:skins/collective_mcp"/>
+
+ <skin-path name="*">
+  <layer name="collective_mcp" />
+ </skin-path>
+</object>
