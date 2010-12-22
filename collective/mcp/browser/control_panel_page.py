@@ -42,6 +42,12 @@ class ControlPanelPage(MultiModeViewlet):
     extra_js = []
     extra_css = []
 
+    @property
+    def cancel_mode(self):
+        if 'back' in self.modes:
+            return 'back'
+        return self.default_mode
+
     def __call__(self):
         self.on_call()
         return self.index()
