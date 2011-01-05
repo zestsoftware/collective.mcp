@@ -8,3 +8,6 @@ class Category(object):
 
     def __repr__(self):
         return 'Category: %s' % self.id
+
+    def getTitle(self):
+        return self.title

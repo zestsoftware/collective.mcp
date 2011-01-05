@@ -129,18 +129,19 @@
 }
 
 #control_panel_content > ul.menu > li > ul > li > a {
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
     color: #505050;
     text-decoration: none;
     text-align: center;
     display: block;
     width: 100px;
+    padding: 5px;
 }
 
 #control_panel_content > ul.menu > li > ul > li > a:hover {
     background-color: #ECECEC;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
     color: #000000;
 }
 
@@ -238,4 +239,25 @@
     padding: 3px 10px;
     margin-bottom: 15px;
     color: #000000;
+}
+
+#control_panel_content fieldset {
+    padding: 5px 10px;
+    margin-bottom: 10px;
+}
+
+#control_panel_content fieldset legend {
+    font-weight: bold;
+    padding: 0px 10px;
+}
+
+#control_panel_content table.listing {
+    margin: 10px;
+}
+
+#control_panel_content table.listing td {
+    padding: 4px 10px;
+}
+#control_panel_content table.listing th{
+    padding: 4px 7px;
 }

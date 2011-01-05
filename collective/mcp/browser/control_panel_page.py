@@ -27,8 +27,9 @@ class ControlPanelPage(MultiModeViewlet):
     # A list of buttons that are appended after the default one.
     # Each button definition is a dictionnary with the following
     # keys:
-    # - title
-    # - mode
+    # - title: the string shown
+    # - mode: the mode activated when clicking the button
+    # - icon: the icon used the replace the title (not needed)
     multi_objects_extra_buttons = []
 
     # Before and after can be used to specify the position of the page in the
@@ -77,7 +78,7 @@ class ControlPanelPage(MultiModeViewlet):
             return form.get('obj_id')
 
         objects = self.list_objects()
-        if objects:
+        if objects and self.mode != 'add':
             return objects[0]['id']
 
         return None

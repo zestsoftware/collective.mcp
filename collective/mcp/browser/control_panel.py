@@ -83,6 +83,7 @@ class MacControlPanel(BrowserView):
                 # Well, there's no page for this category.
                 continue
 
+            cat.context = self.context
             self.categories.append({'category': cat,
                                     'pages': custom_sort(
                                         categories_tmp[cat.id],

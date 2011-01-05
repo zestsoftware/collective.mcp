@@ -63,6 +63,10 @@
                      tal:content="obj/title" />
                 </li>
               </tal:block>
+              <li tal:condition="python: sub_page.mode == 'add'"
+                  class="current">
+                <a>...</a>
+              </li>
             </ul>
             <ul class="buttons"
                 tal:define="obj_id python: view.request.get('obj_id', None);
@@ -70,16 +74,25 @@
               <li tal:repeat="button sub_page/multi_objects_buttons">
                 <a tal:condition="python: button == 'add'"
                    tal:attributes="href sub_page/add_link">
-                  +
+                  <img tal:attributes="src python: '%s/mcp_add_button.gif' % context.absolute_url()"
+                       alt="+" />
                 </a>
                 <a tal:condition="python: button == 'delete'"
                    tal:attributes="href python: sub_page.make_link('delete', make_link_extra)">
-                  -
+                  <img tal:attributes="src python: '%s/mcp_del_button.gif' % context.absolute_url()"
+                       alt="-" />
                 </a>
               </li>
               <li tal:repeat="button sub_page/multi_objects_extra_buttons">
                 <a tal:attributes="href python: sub_page.make_link(button['mode'], make_link_extra)"
-                   tal:content="button/title" />
+                   tal:define="icon button/icon|nothing">
+                   <span tal:condition="not: icon"
+                         tal:replace="button/title" />
+                   <img tal:condition="icon"
+                        tal:attributes="title button/title|nothing;
+                                        alt button/title;
+                                        src python: '%s/%s' %(context.absolute_url(), icon)"/>
+                </a>
               </li>
             </ul>
           </div>
@@ -90,7 +103,7 @@
                 class="menu">
               <li tal:repeat="category categories">
                 <span class="spacer"
-                      tal:content="category/category/title" />
+                      tal:content="category/category/getTitle" />
                 <ul tal:define="oddrow repeat/category/odd"
                     tal:attributes="class python: oddrow and 'odd' or 'even'">
                   <li tal:repeat="page category/pages">
