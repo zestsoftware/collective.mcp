@@ -1,0 +1,23 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n">
+  
+  <browser:page
+      for="*"
+      name="collective_mcp_home_message"
+      class=".HomeMessage"
+      permission="zope.Public"
+      template="home_message.pt"
+      />
+
+  <browser:resource
+      name="collective_mcp_home.png"
+      file="home.png" />
+
+  <browser:resource
+      name="collective_mcp_notes.png"
+      file="notes.png" />
+
+</configure>

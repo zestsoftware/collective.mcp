@@ -1,0 +1,11 @@
+<form method="post"
+      tal:attributes="action view/get_form_action">
+
+  <div class="field">
+    <label for="msg">Message:</label>
+    <input type="text"
+           name="msg"
+           tal:attributes="value view/notes_view/get_home_message" />
+  </div>
+  <span tal:replace="structure view/make_form_extras" />
+</form>
