@@ -260,6 +260,207 @@ Creating a multi-object managing page
 If ou had a look at the 'collective_multimodeview_notes_samples' page,
 you see that its main goal it to manage a list of notes attached to
 the portal of the site.
-We will create a conrol panel page to access the API.
+We will create a control panel page to manage those notes. To do so,
+creates notes.py and notes.pt in the control_panel package.
+
+The notes.py will look like this::
+
+  from collective.mcp.browser.control_panel_page import ControlPanelPage
+
+  class Notes(ControlPanelPage):
+      category = 'settings'
+      zcml_id = 'collective_mcp_notes'
+      widget_id = 'collective_mcp_notes'
+      icon = "++resource++collective_mcp_notes.png"
+      title = 'Notes'
+
+      modes = {'add': {'success_msg': 'The note has been added',
+                       'error_msg': 'Impossible to add a note: please correct the form',
+                       'submit_label': 'Add note'},
+               'edit': {'success_msg': 'The note has been edited',
+                       'submit_label': 'Edit note'},
+               'delete': {'success_msg': 'The note has been deleted',
+                          'submit_label': 'Delete note'}
+               }
+      default_mode = 'edit'
+      multi_objects = True
+
+      @property
+      def notes_view(self):
+          return self.context.restrictedTraverse('@@multimodeview_notes_sample')
+
+      def list_objects(self):
+          notes = self.notes_view.get_notes()
+
+          return [{'id': note_id, 'title': note_text}
+                  for note_id, note_text in enumerate(notes)
+                  if note_text]
+
+      def _get_note_id(self):
+          notes = self.notes_view.get_notes()
+          note_id = self.current_object_id()
+
+          try:
+              note_id = int(note_id)
+          except:
+              # This should not happen, something wrong happened
+              # with the form.
+              return
+
+          if note_id < 0 or note_id >= len(notes):
+              # Again, something wrong hapenned.
+              return
+
+          if notes[note_id] is None:
+              # This note has been deleted, nothing should be done
+              # with it.
+              return
+
+          return note_id
+
+      def get_note_title(self):
+          """ Returns the title of the note currently edited.
+          """
+          if self.errors:
+              return self.request.form.get('title')
+
+          if self.is_add_mode:
+              return ''
+
+          note_id = self._get_note_id()
+          if note_id is None:
+              # This should not happen.
+              return ''
+
+          return self.notes_view.get_notes()[note_id]
+
+      def _check_add_form(self):
+          if not self.request.form.get('title'):
+              self.errors['title'] = 'You must provide a title'
+
+          return True
+
+      def _check_edit_form(self):
+          if self._get_note_id() is None:
+              return
+
+          return self._check_add_form()
+
+      def _check_delete_form(self):
+          return self._get_note_id() is not None
+
+      def _process_add_form(self):
+          self.notes_view.add_note(self.request.form.get('title'))
+
+      def _process_edit_form(self):
+          self.notes_view.edit_note(
+              self._get_note_id(),
+              self.request.form.get('title'))
+
+      def _process_delete_form(self):
+          self.notes_view.delete_note(self._get_note_id())
+          self.request.form['obj_id'] = None
+
+So let's see what is different from the previous page (obviously a
+lot):
+
+ - modes: there is no more 'back' mode, so when submitting the form,
+   we will still see the same page. Some extra modes appears to manage
+   the notes.
+
+ - default_mode: it is set to 'edit'. It means that the page will try,
+   by default, to edit the first object found.
+
+ - multi_objects: is is set to True. That means that this page can be
+   used to manage multiple object. A sidebar will be shown to display
+   the list of objects.
+
+ - list_objects: when setting 'multi_objects' to True, you have to
+   define this method. It returns a list of dictionnary having two
+   keys: one define the id of the object and the second one the title
+   displayed. 
+
+The _check_xxx_form amd _process_xxx_form are quite similar to what we
+saw previously. Except for _process_delete_form. As you can see, after
+deleting the note, we set the key 'obj_id' to None in the request's
+form. We do this to avoid trying to display again the note once
+deleted.
+
+Now let's create a template for our page::
+
+  <tal:block tal:define="notes view/notes_view/get_notes;
+                         note_exists python: bool([n for n in notes if n])">
+    <form method="post"
+          tal:condition="python: note_exists or view.is_add_mode"
+          tal:define="note_title view/get_note_title"
+          tal:attributes="action view/get_form_action">
+
+      <tal:block tal:condition="python: view.is_add_mode or view.is_edit_mode">     
+        <div tal:attributes="class python: view.class_for_field('title')">
+          <label for="title">Title</label>
+          <div class="error_msg"
+               tal:condition="view/errors/title|nothing"
+               tal:content="view/errors/title" />
+          <input type="text"
+                 name="title"
+                 tal:attributes="value note_title" />
+        </div>
+      </tal:block>
+
+      <tal:block tal:condition="view/is_delete_mode">
+        <p>Are you sure you want to delete this note ?</p>
+
+        <p class="discreet"
+           tal:content="note_title" />
+      </tal:block>
+
+      <input type="hidden"
+             name="obj_id"
+             tal:define="obj_id view/current_object_id"
+             tal:condition="obj_id"
+             tal:attributes="value obj_id" />
+
+      <span tal:replace="structure view/make_form_extras" />
+    </form>
+
+    <p tal:condition="not: python: note_exists or view.is_add_mode">
+      There is no note to manage, click the '+' button to create a new one.
+    </p>
+  </tal:block>
+
+In this template, we can see three important things:
+
+ - the use of view/is_xxx_mode: this is a helper provided by
+   collective.multimodeview to now what o display depending on what
+   you are doing.
+
+ - there is an hidden field called 'obj_id'. This is important, as it
+   is used to know which object you are currently editing.
+
+ - there is a default message displayed when there is no notes. Do not
+   forget it. If your page rendered an empty string, the system will
+   show the home page of the menu instead.
+
+Now let's register our page. First in the __init__.py file::
+
+  from notes import Notes
+  register_page(Notes)
+
+and in the configure.zcml::
+
+  <browser:page
+      for="*"
+      name="collective_mcp_notes"
+      class=".Notes"
+      permission="zope.Public"
+      template="notes.pt"
+      />
+
+Restart your server and reload the control panel, you now have two
+pages available. collective.mcp automatically generated the '+' / '-'
+button to create/delete your notes and you see the list of notes on
+the sidebar.
+
+Now let's make it a bit better.
 
 

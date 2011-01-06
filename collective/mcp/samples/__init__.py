@@ -13,3 +13,6 @@ register_category(
 
 from home_message import HomeMessage
 register_page(HomeMessage)
+
+from notes import Notes
+register_page(Notes)

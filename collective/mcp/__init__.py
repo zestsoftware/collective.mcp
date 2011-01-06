@@ -9,7 +9,10 @@ pages = []
 
 def register_category(cat):
     if isinstance(cat, Category):
-        categories.append(cat)
+        if cat.id in [c.id for c in categories]:
+            logger.info('Category id "%s" already exists' % cat.id)
+        else:
+            categories.append(cat)
     else:
         raise TypeError('Expected Category object, found %s' % type(cat))
 

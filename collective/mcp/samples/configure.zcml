@@ -16,6 +16,15 @@
       name="collective_mcp_home.png"
       file="home.png" />
 
+  <browser:page
+      for="*"
+      name="collective_mcp_notes"
+      class=".Notes"
+      permission="zope.Public"
+      template="notes.pt"
+      />
+
+
   <browser:resource
       name="collective_mcp_notes.png"
       file="notes.png" />

@@ -20,11 +20,19 @@ class MacControlPanel(BrowserView):
         """
         pages_dict = {}
         for pclass in pages:
-            page = self.context.restrictedTraverse(
-                '@@%s' % pclass.zcml_id)
+            try:
+                page = self.context.restrictedTraverse(
+                    '@@%s' % pclass.zcml_id)
+            except:
+                # The page does not exist in this context or is not
+                # accessible for the user.
+                logger.info('Page "%s" not found' % pclass.zcml_id)
+                continue
+
             page.view = self
 
             if not page.is_shown():
+                logger.info('Page "%s" not visible' % pclass.zcml_id)
                 continue
 
             try:
