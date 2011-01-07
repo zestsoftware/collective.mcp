@@ -9,7 +9,11 @@
 
   <!-- -*- extra stuff goes here -*- -->
   <include package=".browser" />
-  <include package=".samples" />
+
+  <!-- If you checked-out this package, you can uncomment
+       the following line to have access to some page sample.
+  -->
+  <!-- <include package=".samples" /> -->
 
   <cmf:registerDirectory name="collective_mcp"/>
 
