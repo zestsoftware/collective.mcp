@@ -463,4 +463,175 @@ the sidebar.
 
 Now let's make it a bit better.
 
+Restricting views access
+------------------------
+
+The first thing you might see is that our pages are not secured. So
+even if you are not logged-in, you can set up the home message and
+manage the notes. That's not really good.
+
+The first solution is pretty classic. In the configure.zcml file,
+where you define the pages. you can define a custom permission instead
+of 'Zope.Public'. For example, you can define the 'Home message'
+control panel page this way::
+
+  <browser:page
+      for="*"
+      name="collective_mcp_home_message"
+      class=".HomeMessage"
+      permission="cmf.ManagePortal"
+      template="home_message.pt"
+      />
+
+Ok, by doing so, only managers will be able to set the 'Home
+message'. That's a good thing (even if, in this case, it might be
+better to use the real Plone control panel which is intended to be
+used by managers).
+
+Now let's do the same for the second page used to manage notes.
+
+  <browser:page
+      for="*"
+      name="collective_mcp_notes"
+      class=".Notes"
+      permission="myproduct.manage_notes"
+      template="notes.pt"
+      />
+
+But wait, there is a problem. Some users should be able to create and
+edit note, but not delete them. You can not specify a single
+permission to view the page, you need more.
+Let's consider you have two permissions:
+
+ - myproduct.managenotes: grant the access to this page and allows to
+   add and edit notes.
+
+ - myproduct.deletenotes: user's with this permission can delete a
+   note.
+
+For the moment, everyone with the first permission is able to delete
+notes and you do not want it.
+The first thing we have to do is to declare the 'modes' attribute as a
+property. Users do not have the 'myproduct.deletenote' permission will
+not have access to the delete mode::
+
+  @property
+  def modes(self):
+      modes = {'add': {'success_msg': 'The note has been added',
+                       'error_msg': 'Impossible to add a note: please correct the form',
+                       'submit_label': 'Add note'},
+               'edit': {'success_msg': 'The note has been edited',
+                        'submit_label': 'Edit note'}}
+      if self.checkPermission('myproduct: delete notes'):
+             modes['delete'] = {'success_msg': 'The note has been deleted',
+                                'submit_label': 'Delete note'}
+      return modes
+
+This way, a user that does not have the required permission will not
+be able to switch to delete mode (as, for the view, this mode does not
+exist). Any attempt to use the delete mode will switch back to the
+default one.
+
+But the '-' button is sill shown. To solve this, we will override the
+'multi_objects_buttons' attributes::
+
+  @property
+  def multi_objects_buttons(self):
+      buttons = ['add']
+      if self.checkPermission('myproduct: delete notes'):
+          butons.apend('delete')
+
+      return buttons
+
+Doing so, the '-' buton is only shown when the user has the needed
+permission.
+
+Adding extra buttons to multi-objects views
+-------------------------------------------
+
+You might need more buttons in the list than '+' and '-' ones. Let's
+say for example that you want the notes to be displayed only on
+certain areas of the site. This setting is different for each note.
+
+To do so, we will first declare a new mode in the list and the methods
+needed to proces it::
+
+  
+  class Notes(ControlPanelPage):
+      ...
+      modes = {...,
+               'display': {'success_msg': 'The display zones for the ' +\
+                           'note has been updated',
+                       	   'submit_label': 'Change display zones'}
+               }
+
+      ...
+
+      def _check_display_form(self):
+          # do some checks.
+	  return True
+
+      def _process_display_form(self):
+          # process the form
+
+Now we also declare an extra button displayed in the list, after the
+'-' one::
+
+      multi_objects_extra_buttons = [
+          {'mode': 'display',
+           'title': 'Change display zones',
+           'icon': 'display_button.gif'}]
+
+The 'multi_object_extra_buttons' property is a list of
+dictionnary. For each you define:
+
+ - which is the mode used when clicking the button
+
+ - the text displayed as a title for the button
+
+ - the icon used (if you use the default theme, the best size is 15px
+   x 15px)
+
+Switching from one mode to the other after processing the form
+--------------------------------------------------------------
+
+We already saw in the first sample that if a 'back' mode is defined,
+the system will automatically switch back to it when the form is
+submitted and display the home page again.
+
+You can also specify it for each mode. There is two solutions to do
+this. The first one is in the '_process_xxx_form'. You can return the
+mode to which the system will switch after processing.
+For example, when you add a note, you want the user to see directly
+the 'display' mode so they can asign display zones just after adding a
+note. To do so, change the '_process_add_form' like this::
+
+      def _process_add_form(self):
+          # do the processing
+	  return 'display'
+
+Now when you add a note, you see the form to manage where it is
+displayed.
+
+The second solution is to update the 'modes' attribute, so you can
+specify which mode is displayed after a success or after cancelling::
+
+
+      modes = {'add': {'success_msg': 'The note has been added',
+                       'error_msg': 'Impossible to add a note: please correct the form',
+                       'submit_label': 'Add note',
+		       'success_mode': 'display',
+		       'cancel_mode': 'edit'}
+	       ...
+               }
+
+Here it is not needed to specify cancel_mode as it is the default
+one.
+
+The main advantage of the first solution is that you can define
+different modes to switch to after procesing the form, depending on
+the data sent. But if you always switch to the same mode after
+processing data, it might be better to declare everything in the
+'modes' attribute so you have a clear overview of the relation between
+modes.
 
