@@ -24,6 +24,12 @@
       template="notes.pt"
       />
 
+  <browser:page
+      for="*"
+      name="mcp_multimodeview_notes_sample"
+      class="collective.multimodeview.samples.notes_view.NotesView"
+      permission="zope2.View"
+      />
 
   <browser:resource
       name="collective_mcp_notes.png"

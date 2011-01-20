@@ -1,8 +1,10 @@
 import logging 
+from zope.i18nmessageid import MessageFactory
 
 from category import Category
 
 logger = logging.getLogger('collective.mcp')
+McpMessageFactory = MessageFactory(u'collective.mcp')
 
 categories = []
 pages = []

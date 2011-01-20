@@ -82,3 +82,9 @@ class ControlPanelPage(MultiModeViewlet):
             return objects[0]['id']
 
         return None
+
+    def make_link(self, mode, extra_params = None):
+        """ Removes the unneeded '#widget_id' at the end of the link.
+        """
+        link = super(ControlPanelPage, self).make_link(mode, extra_params)
+        return link.replace('#%s' % self.widget_id, '')

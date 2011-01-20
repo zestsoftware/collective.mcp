@@ -17,6 +17,41 @@ This product does not magically create the pages for your site, it
 only provides some API to create them, as we'll see later in this
 README.
 
+Installing collective.mcp
+=========================
+
+In your buildout, add collective.mcp in the eggs directory. Run
+buildout, start your instance again and add the product using the
+quick_installer (or the Plone equivqlent).
+You can now access the control panel by accessing
+``http://localhost:8080/your_plone_site/control_panel``. As you have
+not added any page yet, you will get a message telling you that you
+can not manage anything.
+
+    >>> self.browser.open('http://nohost/plone/control_panel/')
+    >>> "There is nothing you can manage." in self.browser.contents
+    True
+
+    >>> from collective.mcp import categories, pages
+    >>> categories
+    []
+    >>> pages
+    []
+
+
+Viewing samples
+===============
+
+You can load the file ``samples.zcml`` file from collective.mcp to get
+some samples.
+For example, in the ``configure.zcml`` file of your theme::
+
+  <include package="collective.mcp"
+           file="samples.zcml" />
+
+Restart the instance, reload the control panel page and you should see
+some pages ready to be used.
+
 Implementing your control panel
 ===============================
 
@@ -30,11 +65,11 @@ which you want to add a control panel. This one has a 'browser'
 package. Inside the browser package, create a 'control_panel' package,
 containing __init__.py and configure.zcml.
 
-The __init__.py file you look like this::
+The __init__.py file you look like this (except you replace the
+message factory by your own product message factory)::
 
-  from collective.mcp import Category, register_category, register_page
-
-  from your_product import your_product_message_factory as _
+    >>> from collective.mcp import Category, register_category, register_page
+    >>> from collective.mcp import McpMessageFactory as _
 
 And the configure.zcml file like this::
 
@@ -71,16 +106,15 @@ the project wiki, there is four categories:
 In our example, we'll only create the first and last categories. To do
 so, in the __init__.py, we'll add the following code::
 
-  register_category(
-      Category('personal',
-               _(u'label_cpcat_personal_prefs',
-                 default=u'Personal preferences')))
-
-  register_category(
-      Category('settings',
-               _(u'label_cpcat_settings',
-                 default=u'Settings'),
-               after='personal'))
+    >>> register_category(
+    ...     Category('personal',
+    ...              _(u'label_cpcat_personal_prefs',
+    ...                default=u'Personal preferences')))
+    >>> register_category(
+    ...     Category('settings',
+    ...              _(u'label_cpcat_settings',
+    ...                default=u'Settings'),
+    ...              after='personal'))
 
 As you can see, we specified that the 'settings' category will appear
 after the 'personal' one. We could also have specified that 'personal'
@@ -89,6 +123,11 @@ is before 'settings' and get the same result.
 If you reload now the control panel, nothing has changed. That is
 normal, the system does not display categories for which there is no
 page (or the user can not use any of the pages).
+
+    >>> categories
+    [Category: personal, Category: settings]
+    >>> pages
+    []
 
 Creating a simple page
 ----------------------
@@ -103,7 +142,7 @@ file:
   <browser:page
       for="*"
       name="multimodeview_notes_sample"
-      class="collective.;unti;odeview.samples.notes_view.NotesView"
+      class="collective.multimodeview.samples.notes_view.NotesView"
       permission="zope2.View"
       />
 
@@ -113,7 +152,7 @@ The API is pretty simple and do not realy need explanations:
 
 - get_home_message()
 
--  set_home_message(msg)
+- set_home_message(msg)
 
 This message is not displayed anywhere. It could, but that's not
 covered by this README.
@@ -206,8 +245,13 @@ explanations.
 The last step is to declare our view in the zcml file and register
 it. First, in the __init__.py file::
 
-  from home_message import HomeMessage
-  register_page(HomeMessage)
+    >>> from collective.mcp.samples.home_message import HomeMessage
+    >>> register_page(HomeMessage)
+
+This makes the page appear in the ``pages`` list::
+
+    >>> pages
+    [<class 'collective.mcp.samples.home_message.HomeMessage'>]
 
 Then in the ZCML file::
 
@@ -223,8 +267,19 @@ Now you can restart the server and reload the control panel. The
 'settings' category will appear, containing one page with a question
 mark icon.
 
+    >>> self.browser.open('http://nohost/plone/control_panel/')
+    >>> 'There is nothing you can manage.' in self.browser.contents
+    False
+
+    >>> '<span class="spacer">Settings</span>' in self.browser.contents
+    True
+
+    >>> '<span class="spacer">Personal preferences</span>' in self.browser.contents
+    False
+
+
 First, let's solve the icon problem. In the sample directory you will
-ind two icons taken from this set:
+find two icons taken from this set:
 http://www.iconfinder.com/search/?q=iconset%3A49handdrawing
 
 Let's declare the home.png file in the zcml::
@@ -243,6 +298,41 @@ problem can easily be solved too::
 
   class HomeMessage(ControlPanelPage):
       title = 'Home message'
+
+The image now appears in the control panel and the title is also displayed::
+
+    >>> '<img src="++resource++collective_mcp_home.png"' in self.browser.contents
+    True
+    >>> '<span>Home message</span>' in self.browser.contents
+    True
+
+If we click on the icon, the main page is not displayed anymore and we
+see our form instead::
+
+    >>> self.browser.getLink('Home message').click()
+    >>> self.browser.url
+    'http://nohost/plone/control_panel?mode=default&widget_id=collective_mcp_home_message'
+
+    >>> '<img src="++resource++collective_mcp_home.png"' in self.browser.contents
+    False
+    >>> '<label for="msg">Message:</label>' in self.browser.contents
+    True
+
+We can fill the home message and validate. We get a sucess message
+displayed and we are back on the control panel home page::
+
+    >>> self.browser.getControl(name='msg').value = 'My new home message - welcome :)'
+    >>> self.browser.getControl(name='form_submitted').click()
+    >>> "<dd>The home message has been updated</dd>" in self.browser.contents
+    True
+
+If we had cancelled, we would have got a different message (which is
+the default cancel message inherited from collective.multimodeview) ::
+
+    >>> self.browser.getLink('Home message').click()
+    >>> self.browser.getControl(name='form_cancelled').click()
+    >>> "<dd>Changes have been cancelled.</dd>" in self.browser.contents
+    True
 
 And that's all, you have your first page of the control panel
 working. Ok it's not really usefull, but that's a good start. In
@@ -351,6 +441,7 @@ The notes.py will look like this::
 
       def _process_add_form(self):
           self.notes_view.add_note(self.request.form.get('title'))
+	  self.request.form['obj_id'] = len(self.notes_view.get_notes()) - 1
 
       def _process_edit_form(self):
           self.notes_view.edit_note(
@@ -381,10 +472,13 @@ lot):
    displayed. 
 
 The _check_xxx_form amd _process_xxx_form are quite similar to what we
-saw previously. Except for _process_delete_form. As you can see, after
-deleting the note, we set the key 'obj_id' to None in the request's
-form. We do this to avoid trying to display again the note once
-deleted.
+saw previously. One point to look at is the fact that we modify the
+'obj_id' entry of the request in both ``_process_add_form`` and
+``_process_delete_form``. In the first case, we do that so the note
+that has just been added with be considered as the current one. In the
+second case, we delete the entry so the system will not consider the
+deleted note as the current one (as it does not exist anymore) and
+will pick the first available one.
 
 Now let's create a template for our page::
 
@@ -443,8 +537,12 @@ In this template, we can see three important things:
 
 Now let's register our page. First in the __init__.py file::
 
-  from notes import Notes
-  register_page(Notes)
+    >>> from collective.mcp.samples.notes import Notes
+    >>> register_page(Notes)
+
+    >>> pages
+    [<class 'collective.mcp.samples.home_message.HomeMessage'>,
+     <class 'collective.mcp.samples.notes.Notes'>]
 
 and in the configure.zcml::
 
@@ -457,9 +555,73 @@ and in the configure.zcml::
       />
 
 Restart your server and reload the control panel, you now have two
-pages available. collective.mcp automatically generated the '+' / '-'
-button to create/delete your notes and you see the list of notes on
-the sidebar.
+pages available.
+
+    >>> self.browser.open('http://nohost/plone/control_panel/')
+    >>> self.browser.getLink('Notes').click()
+    >>> self.browser.url
+    'http://nohost/plone/control_panel?mode=edit&widget_id=collective_mcp_notes'
+
+As you have not played with the notes yet, the list on the right
+is empty and you get a message telling you to add some notes::
+
+    >>> import re
+    >>> re.search('(<ul class="objects">\s*</ul>)', self.browser.contents).groups()
+    ('<ul class="objects">...</ul>',)
+
+    >>> "There is no note to manage, click the '+' button to create a new one." in self.browser.contents
+    True
+
+``collective.mcp`` automatically added a '+' and a '-' button that
+will trigger the ``add`` and `delete` moes of your new page.
+We'll click on the ``add`` button that will display the form to create
+a note::
+
+    >>> self.browser.getLink('+').click()
+    >>> self.browser.url
+    'http://nohost/plone/control_panel?mode=add&widget_id=collective_mcp_notes'
+
+    >>> '<label for="title">Title</label>' in self.browser.contents
+    True
+
+You can also notice that, when adding a new object, a new line appears
+in the objects list and is shown as selected::
+
+    >>> re.search('(<li\s*class="current">\s*<a>...</a>\s*</li>)', self.browser.contents).groups()
+    ('<li class="current">...<a>...</a>...</li>',)
+
+Now we'll add a note objects::
+
+    >>> self.browser.getControl(name='title').value = 'A new note'
+    >>> self.browser.getControl(name='form_submitted').click()
+
+This time we are not redirected to the control panel home page but to
+the ``edit`` page of the object we just added and we get a success
+message::
+
+    >>> '<dd>The note has been added</dd>' in self.browser.contents
+    True
+
+    >>> re.search('(<li class="current">\s*<a href=".*">A new note</a>\s*</li>)', self.browser.contents).groups()
+    ('<li class="current">...<a href="...">A new note</a>...</li>',)
+
+    >>> re.search('(<input type="text" name="title"\s*value="A new note" />)', self.browser.contents).groups()
+    ('<input type="text" name="title" value="A new note" />',)
+
+We now add a second note::
+
+    >>> self.browser.getLink('+').click()
+    >>> self.browser.getControl(name='title').value = 'My second note'
+    >>> self.browser.getControl(name='form_submitted').click()
+
+When saving this note is selected by default::
+
+    >>> re.search('(<li class="current">\s*<a href=".*">My second note</a>\s*</li>)', self.browser.contents).groups()
+    ('<li class="current">...<a href="...">My second note</a>...</li>',)
+    
+    >>> re.search('(<input type="text" name="title"\s*value="My second note" />)', self.browser.contents).groups()
+    ('<input type="text" name="title"...value="My second note" />',)
+
 
 Now let's make it a bit better.
 

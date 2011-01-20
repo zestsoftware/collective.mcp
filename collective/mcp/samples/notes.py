@@ -20,7 +20,7 @@ class Notes(ControlPanelPage):
 
     @property
     def notes_view(self):
-        return self.context.restrictedTraverse('@@multimodeview_notes_sample')
+        return self.context.restrictedTraverse('@@mcp_multimodeview_notes_sample')
 
     def list_objects(self):
         notes = self.notes_view.get_notes()
@@ -84,6 +84,7 @@ class Notes(ControlPanelPage):
 
     def _process_add_form(self):
         self.notes_view.add_note(self.request.form.get('title'))
+        self.request.form['obj_id'] = len(self.notes_view.get_notes()) - 1
 
     def _process_edit_form(self):
         self.notes_view.edit_note(

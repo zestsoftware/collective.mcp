@@ -14,7 +14,7 @@ class HomeMessage(ControlPanelPage):
 
     @property
     def notes_view(self):
-        return self.context.restrictedTraverse('@@multimodeview_notes_sample')
+        return self.context.restrictedTraverse('@@mcp_multimodeview_notes_sample')
 
     def _check_default_form(self):
         return True

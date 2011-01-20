@@ -9,14 +9,5 @@
 
   <!-- -*- extra stuff goes here -*- -->
   <include package=".browser" />
-
-  <cmf:registerDirectory name="collective_mcp"/>
-
-  <genericsetup:registerProfile
-      name="default"
-      title="collective.mcp"
-      directory="profiles/default"
-      description='Extension profile for the custom version of collective.mcp'
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
+  <include package=".samples" />
 </configure>
