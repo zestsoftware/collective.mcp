@@ -14,8 +14,9 @@ register_category(
 from home_message import HomeMessage
 register_page(HomeMessage)
 
-from notes import Notes
+from notes import Notes, NotesDisplay
 register_page(Notes)
+register_page(NotesDisplay)
 
 from restricted import HomeMessageRestricted, \
      HomeMessageRestrictedII, \

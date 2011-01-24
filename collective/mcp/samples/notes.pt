@@ -24,6 +24,22 @@
          tal:content="note_title" />
     </tal:block>
 
+    <tal:block tal:condition="python: 'display' in view.modes and view.is_display_mode">
+      <p>Set where the note should be displayed</p>
+      <ul tal:define="zones view/get_zones">
+        <li tal:repeat="zone zones">
+          <label>
+            <input type="checkbox"
+                   name="zones"
+                   tal:attributes="checked python: zone['checked'] and 'checked' or None;
+                                   value zone/value" />
+            <span tal:replace="zone/value" />
+          </label>
+        </li>
+      </ul>
+    </tal:block>
+
+
     <input type="hidden"
            name="obj_id"
            tal:define="obj_id view/current_object_id"

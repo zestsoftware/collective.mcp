@@ -21,18 +21,18 @@
   <!-- A page providing an API to manage some notes -->
   <browser:page
       for="*"
-      name="collective_mcp_notes"
-      class=".Notes"
-      permission="zope.Public"
-      template="notes.pt"
+      name="mcp_multimodeview_notes_sample"
+      class=".notes_api.McpNotesView"
+      permission="zope2.View"
       />
 
   <!-- The control panel page to manage the notes -->
   <browser:page
       for="*"
-      name="mcp_multimodeview_notes_sample"
-      class="collective.multimodeview.samples.notes_view.NotesView"
-      permission="zope2.View"
+      name="collective_mcp_notes"
+      class=".Notes"
+      permission="zope.Public"
+      template="notes.pt"
       />
 
   <!-- The icon for the previous page -->
@@ -103,5 +103,20 @@
       permission="zope.Public"
       template="home_message.pt"
       />
+
+  <!-- The control panel page to manage the notes
+       version allowing setting the display -->
+  <browser:page
+      for="*"
+      name="collective_mcp_notes_display"
+      class=".NotesDisplay"
+      permission="zope.Public"
+      template="notes.pt"
+      />
+
+  <!-- The icon used to set display for notes -->
+  <browser:resource
+      name="display_button.png"
+      file="display_button.png" />
 
 </configure>

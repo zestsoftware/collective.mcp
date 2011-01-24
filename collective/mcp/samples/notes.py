@@ -94,3 +94,53 @@ class Notes(ControlPanelPage):
     def _process_delete_form(self):
         self.notes_view.delete_note(self._get_note_id())
         self.request.form['obj_id'] = None
+
+class NotesDisplay(Notes):
+    """ More or less the same than the previous one, except it
+    has an extra 'display' mode.
+    """
+    zcml_id = 'collective_mcp_notes_display'
+    widget_id = 'collective_mcp_notes_display'
+    title = 'Displayed notes'
+
+    modes = {'add': {'success_msg': 'The note has been added',
+                     'error_msg': 'Impossible to add a note: please correct the form',
+                     'submit_label': 'Add note'},
+             'edit': {'success_msg': 'The note has been edited',
+                     'submit_label': 'Edit note'},
+             'display': {'success_msg': 'Display zones for the note have been updated',
+                         'submit_label': 'Set display zones'},
+             'delete': {'success_msg': 'The note has been deleted',
+                        'submit_label': 'Delete note'}
+             }
+
+    multi_objects_extra_buttons = [
+        {'mode': 'display',
+         'title': 'Change display zones',
+         'icon': '++resource++display_button.png'}]
+
+    def get_zones(self):
+        zones = []
+
+        note_id = self._get_note_id()
+        display_zones = self.notes_view.get_display_zones()
+        note_display_zones = display_zones.get(note_id, [])
+
+        for zone in self.notes_view.display_zones_list:
+            zones.append({'value': zone,
+                          'checked': zone in note_display_zones})
+        return zones
+
+    def _check_display_form(self):
+	  return True
+
+    def _process_display_form(self):
+        zones = self.request.form.get('zones', [])
+
+        if isinstance(zones, str):
+            # Only one zone has been checked.
+            zones = [zones]
+
+        self.notes_view.set_display_zones(
+            self._get_note_id(),
+            zones)
