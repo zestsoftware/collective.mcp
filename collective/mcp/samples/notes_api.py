@@ -16,7 +16,6 @@ class McpNotesView(NotesView):
             metadata['display_zones'] = PersistentDict()
             display_zones = metadata['display_zones']
 
-        print dict([(k, v) for k, v in display_zones.items()])
         return display_zones
 
     def set_display_zones(self, note_id, zones):

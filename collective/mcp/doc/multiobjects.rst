@@ -50,46 +50,52 @@ dictionnary. For each you define:
  - the icon used (if you use the default theme, the best size is 15px
    x 15px)
 
-Switching from one mode to the other after processing the form
---------------------------------------------------------------
+Now let's check that our new button is displayed (and works) and add a
+new note to manage where it is displayed::
 
-We already saw in the first sample that if a 'back' mode is defined,
-the system will automatically switch back to it when the form is
-submitted and display the home page again.
+    >>> from collective.mcp import register_page
+    >>> from collective.mcp.samples import NotesDisplay
+    >>> register_page(NotesDisplay)
 
-You can also specify it for each mode. There is two solutions to do
-this. The first one is in the '_process_xxx_form'. You can return the
-mode to which the system will switch after processing.
-For example, when you add a note, you want the user to see directly
-the 'display' mode so they can asign display zones just after adding a
-note. To do so, change the '_process_add_form' like this::
+    >>> self.browser.open('http://nohost/plone/control_panel')
+    >>> self.browser.getLink('Displayed notes').click()
+    >>> self.browser.url
+    'http://nohost/plone/control_panel?mode=edit&widget_id=collective_mcp_notes_display'
+    >>> 'display_button.png' in self.browser.contents
+    True
+    >>> "There is no note to manage, click the '+' button to create a new one." in self.browser.contents
+    True
+    >>> self.browser.getLink('+').click()
+    >>> self.browser.getControl(name='title').value = 'A new note'
+    >>> self.browser.getControl(name='form_submitted').click()
 
-      def _process_add_form(self):
-          # do the processing
-	  return 'display'
+Now if we click on the button, we will see the form to edit the
+display zones for our object::
 
-Now when you add a note, you see the form to manage where it is
-displayed.
+    >>> self.browser.getLink('Change display zones').click()
+    >>> self.browser.url
+    'http://nohost/plone/control_panel?mode=display&widget_id=collective_mcp_notes_display'
 
-The second solution is to update the 'modes' attribute, so you can
-specify which mode is displayed after a success or after cancelling::
+    >>> 'Set where the note should be displayed' in self.browser.contents
+    True
 
+Let's select some and save it::
 
-      modes = {'add': {'success_msg': 'The note has been added',
-                       'error_msg': 'Impossible to add a note: please correct the form',
-                       'submit_label': 'Add note',
-		       'success_mode': 'display',
-		       'cancel_mode': 'edit'}
-	       ...
-               }
+    >>> self.browser.getControl('home').selected = True
+    >>> self.browser.getControl('news').selected = True
+    >>> self.browser.getControl(name='form_submitted').click()
+    >>> self.browser.url
+    'http://nohost/plone/control_panel'
+    >>> '<label for="title">Title</label>' in self.browser.contents
 
-Here it is not needed to specify cancel_mode as it is the default
-one.
+Ok we have returned to the 'edit' view for this note. Clicking on the
+display button again should show our form with the values saved::
 
-The main advantage of the first solution is that you can define
-different modes to switch to after procesing the form, depending on
-the data sent. But if you always switch to the same mode after
-processing data, it might be better to declare everything in the
-'modes' attribute so you have a clear overview of the relation between
-modes.
+    >>> self.browser.getLink('Change display zones').click()
+    >>> self.browser.getControl('home').selected
+    True
+    >>> self.browser.getControl('news').selected
+    True
 
+There is not (yet) much more things to explain for multi-object
+views.
