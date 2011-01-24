@@ -16,3 +16,13 @@ register_page(HomeMessage)
 
 from notes import Notes
 register_page(Notes)
+
+from restricted import HomeMessageRestricted, \
+     HomeMessageRestrictedII, \
+     HomeMessageRestrictedIII,\
+     NotesRestricted
+register_page(HomeMessageRestricted)
+register_page(HomeMessageRestrictedII)
+register_page(HomeMessageRestrictedIII)
+register_page(NotesRestricted)
+

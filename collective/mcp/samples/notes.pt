@@ -17,7 +17,7 @@
       </div>
     </tal:block>
 
-    <tal:block tal:condition="view/is_delete_mode">
+    <tal:block tal:condition="python: 'delete' in view.modes and view.is_delete_mode">
       <p>Are you sure you want to delete this note ?</p>
 
       <p class="discreet"

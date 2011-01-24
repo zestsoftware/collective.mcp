@@ -631,82 +631,9 @@ Restricting views access
 The first thing you might see is that our pages are not secured. So
 even if you are not logged-in, you can set up the home message and
 manage the notes. That's not really good.
+The file collective/mcp/doc/restriction.rst shows some examples and
+tests on how to restrict access to the pages of the control panel.
 
-The first solution is pretty classic. In the configure.zcml file,
-where you define the pages. you can define a custom permission instead
-of 'Zope.Public'. For example, you can define the 'Home message'
-control panel page this way::
-
-  <browser:page
-      for="*"
-      name="collective_mcp_home_message"
-      class=".HomeMessage"
-      permission="cmf.ManagePortal"
-      template="home_message.pt"
-      />
-
-Ok, by doing so, only managers will be able to set the 'Home
-message'. That's a good thing (even if, in this case, it might be
-better to use the real Plone control panel which is intended to be
-used by managers).
-
-Now let's do the same for the second page used to manage notes.
-
-  <browser:page
-      for="*"
-      name="collective_mcp_notes"
-      class=".Notes"
-      permission="myproduct.manage_notes"
-      template="notes.pt"
-      />
-
-But wait, there is a problem. Some users should be able to create and
-edit note, but not delete them. You can not specify a single
-permission to view the page, you need more.
-Let's consider you have two permissions:
-
- - myproduct.managenotes: grant the access to this page and allows to
-   add and edit notes.
-
- - myproduct.deletenotes: user's with this permission can delete a
-   note.
-
-For the moment, everyone with the first permission is able to delete
-notes and you do not want it.
-The first thing we have to do is to declare the 'modes' attribute as a
-property. Users do not have the 'myproduct.deletenote' permission will
-not have access to the delete mode::
-
-  @property
-  def modes(self):
-      modes = {'add': {'success_msg': 'The note has been added',
-                       'error_msg': 'Impossible to add a note: please correct the form',
-                       'submit_label': 'Add note'},
-               'edit': {'success_msg': 'The note has been edited',
-                        'submit_label': 'Edit note'}}
-      if self.checkPermission('myproduct: delete notes'):
-             modes['delete'] = {'success_msg': 'The note has been deleted',
-                                'submit_label': 'Delete note'}
-      return modes
-
-This way, a user that does not have the required permission will not
-be able to switch to delete mode (as, for the view, this mode does not
-exist). Any attempt to use the delete mode will switch back to the
-default one.
-
-But the '-' button is sill shown. To solve this, we will override the
-'multi_objects_buttons' attributes::
-
-  @property
-  def multi_objects_buttons(self):
-      buttons = ['add']
-      if self.checkPermission('myproduct: delete notes'):
-          butons.apend('delete')
-
-      return buttons
-
-Doing so, the '-' buton is only shown when the user has the needed
-permission.
 
 Adding extra buttons to multi-objects views
 -------------------------------------------

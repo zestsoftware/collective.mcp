@@ -59,7 +59,7 @@ class MacControlPanel(BrowserView):
             page = pages_dict[requested_id]
             rendered = page()
             
-            # The is a special mode for sub-page called back.
+            # There is a special mode for sub-page called 'back'.
             # In this mode, the page is not shown but the main menu.
             if page.mode != 'back':
                 self.sub_page = page
