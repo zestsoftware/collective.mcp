@@ -77,4 +77,31 @@
       template="notes.pt"
       />
 
+  <!-- Defect version of the Home message: wrong category id -->
+  <browser:page
+      for="*"
+      name="collective_mcp_home_message_defect1"
+      class=".WrongCatIdHomeMessage"
+      permission="zope.Public"
+      template="home_message.pt"
+      />
+
+  <!-- Defect version of the Home message: clashing widget id -->
+  <browser:page
+      for="*"
+      name="collective_mcp_home_message_defect2"
+      class=".ClashingWidgetIdHomeMessage"
+      permission="zope.Public"
+      template="home_message.pt"
+      />
+
+  <!-- Page that do not define a widget_id. -->
+  <browser:page
+      for="*"
+      name="collective_mcp_home_message_defect3"
+      class=".NoWidgetIdPage"
+      permission="zope.Public"
+      template="home_message.pt"
+      />
+
 </configure>

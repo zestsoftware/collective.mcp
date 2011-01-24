@@ -64,6 +64,8 @@ def sorted_categories():
     return custom_sort(categories, 'id')
 
 def register_page(p):
+    if not p.category in categories:
+        logger.info('There is no "%s" category registered' % p.category)
     pages.append(p)
 
 def initialize(context):

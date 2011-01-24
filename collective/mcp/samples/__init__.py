@@ -26,3 +26,9 @@ register_page(HomeMessageRestrictedII)
 register_page(HomeMessageRestrictedIII)
 register_page(NotesRestricted)
 
+from defect import WrongCatIdHomeMessage, \
+     ClashingWidgetIdHomeMessage,\
+     NoWidgetIdPage
+register_page(WrongCatIdHomeMessage)
+register_page(ClashingWidgetIdHomeMessage)
+register_page(NoWidgetIdPage)

@@ -31,16 +31,16 @@ class MacControlPanel(BrowserView):
 
             page.view = self
 
-            if not page.is_shown():
-                logger.info('Page "%s" not visible' % pclass.zcml_id)
-                continue
-
             try:
                 page_id = page.widget_id
 
                 if page_id in pages_dict:
                     msg = "widget_id '%s' is already used. Choose another one."
                     logger.warn(msg % page_id)
+                    continue
+
+                if not page.is_shown():
+                    logger.info('Page "%s" not visible' % pclass.zcml_id)
                     continue
 
                 pages_dict[page_id] = page
