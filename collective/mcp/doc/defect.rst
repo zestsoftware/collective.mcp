@@ -180,3 +180,9 @@ raised hopefully - other missing attributes might lead to the well-known
 
     >>> '<span class="spacer">Settings</span>' in self.browser.contents
     True
+
+Note: for the Category, we raise an error when registering a category
+that is not a Category instance. For the pages, we can not do it as
+Zope does some magic and even normal page are not instances of
+ControlPanelPage.
+If you know a way to solve the problem, do not hesitate.

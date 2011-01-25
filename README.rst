@@ -623,14 +623,19 @@ When saving this note is selected by default::
     ('<input type="text" name="title"...value="My second note" />',)
 
 
-You will find more documentation about multi-objects views in
-``collective/mcp/doc/multiobjects.rst``.
+More documentation
+------------------
 
-Restricting views access
-------------------------
+You will find more documentation in ``collective/mcp/doc``. There is
+four extra documentations there::
 
-The first thing you might see is that our pages are not secured. So
-even if you are not logged-in, you can set up the home message and
-manage the notes. That's not really good.
-The file collective/mcp/doc/restriction.rst shows some examples and
-tests on how to restrict access to the pages of the control panel.
+ - modes.rst - some extra explanation about the ``modes`` attributes
+   of the class.
+
+ - restriction.rst - explains the diferent methods to restrict access
+   to the pages.
+
+ - multiobjects.rst - going a bit deeper with the multi-objects views.
+
+ - defect.rst - some examples of what you should not do.
+

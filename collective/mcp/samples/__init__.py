@@ -14,9 +14,10 @@ register_category(
 from home_message import HomeMessage
 register_page(HomeMessage)
 
-from notes import Notes, NotesDisplay
+from notes import Notes, NotesDisplay, NotesDisplayModeSwitch
 register_page(Notes)
 register_page(NotesDisplay)
+register_page(NotesDisplayModeSwitch)
 
 from restricted import HomeMessageRestricted, \
      HomeMessageRestrictedII, \

@@ -18,6 +18,11 @@ def register_category(cat):
     else:
         raise TypeError('Expected Category object, found %s' % type(cat))
 
+def register_page(p):
+    if not p.category in categories:
+        logger.info('There is no "%s" category registered' % p.category)
+    pages.append(p)
+
 def custom_sort(l, id_attr):
     """ Custom sort method to work with before/after
     attributes.
@@ -62,11 +67,6 @@ def custom_sort(l, id_attr):
 
 def sorted_categories():
     return custom_sort(categories, 'id')
-
-def register_page(p):
-    if not p.category in categories:
-        logger.info('There is no "%s" category registered' % p.category)
-    pages.append(p)
 
 def initialize(context):
     """Initializer called when used as a Zope 2 product."""

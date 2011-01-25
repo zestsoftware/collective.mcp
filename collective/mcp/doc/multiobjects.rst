@@ -87,6 +87,7 @@ Let's select some and save it::
     >>> self.browser.url
     'http://nohost/plone/control_panel'
     >>> '<label for="title">Title</label>' in self.browser.contents
+    True
 
 Ok we have returned to the 'edit' view for this note. Clicking on the
 display button again should show our form with the values saved::

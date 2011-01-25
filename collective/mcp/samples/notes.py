@@ -144,3 +144,25 @@ class NotesDisplay(Notes):
         self.notes_view.set_display_zones(
             self._get_note_id(),
             zones)
+
+class NotesDisplayModeSwitch(NotesDisplay):
+    """ Same principle than the previous one.
+    It adds some extra parameters when defining the mode to declare
+    to which mode switch after adding a note or after cancelling.
+    """
+    zcml_id = 'collective_mcp_notes_mode_switch'
+    widget_id = 'collective_mcp_notes_mode_switch'
+    title = 'Mode switching notes'
+
+    modes = {'add': {'success_msg': 'The note has been added',
+                     'error_msg': 'Impossible to add a note: please correct the form',
+                     'submit_label': 'Add note',
+                     'cancel_mode': 'add',
+                     'success_mode': 'display'},
+             'edit': {'success_msg': 'The note has been edited',
+                     'submit_label': 'Edit note'},
+             'display': {'success_msg': 'Display zones for the note have been updated',
+                         'submit_label': 'Set display zones'},
+             'delete': {'success_msg': 'The note has been deleted',
+                        'submit_label': 'Delete note'}
+             }

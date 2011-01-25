@@ -114,6 +114,16 @@
       template="notes.pt"
       />
 
+  <!-- The same page than the previous one,
+       with custom mode switching. -->
+  <browser:page
+      for="*"
+      name="collective_mcp_notes_mode_switch"
+      class=".NotesDisplayModeSwitch"
+      permission="zope.Public"
+      template="notes.pt"
+      />
+
   <!-- The icon used to set display for notes -->
   <browser:resource
       name="display_button.png"
