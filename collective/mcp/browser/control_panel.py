@@ -2,7 +2,7 @@ import logging
 
 from Products.Five import BrowserView
 
-from collective.mcp import categories, pages, sorted_categories, custom_sort
+from collective.mcp import categories, pages
 
 logger = logging.getLogger('collective.multimodeview')
 
@@ -86,16 +86,14 @@ class MacControlPanel(BrowserView):
         # to render the main page.
         self.categories = []
 
-        for cat in sorted_categories():
+        for cat in categories:
             if not cat.id in categories_tmp:
                 # Well, there's no page for this category.
                 continue
 
             cat.context = self.context
             self.categories.append({'category': cat,
-                                    'pages': custom_sort(
-                                        categories_tmp[cat.id],
-                                        'widget_id')
+                                    'pages': categories_tmp[cat.id]
                                     })
 
         return self.index()

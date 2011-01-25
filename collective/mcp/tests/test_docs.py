@@ -14,6 +14,8 @@ ptc.setupPloneSite()
 import collective.mcp
 import collective.multimodeview
 
+from collective.mcp.sorted_list import SortedList
+
 OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)
 
@@ -52,8 +54,8 @@ class TestCase(ptc.PloneTestCase):
             ztc.installPackage(collective.mcp)
 
             # We need to clean what has been added by samples.
-            collective.mcp.categories = []
-            collective.mcp.pages = []
+            collective.mcp.categories = SortedList(id_attr='id')
+            collective.mcp.pages = SortedList(id_attr='widget_id')
 
             fiveconfigure.debug_mode = False
 
@@ -98,11 +100,6 @@ def test_suite():
             test_class=TestCase),
         ztc.FunctionalDocFileSuite(
             'doc/multiobjects.rst',
-            package='collective.mcp',
-            optionflags=OPTIONFLAGS,
-            test_class=TestCase),
-        ztc.FunctionalDocFileSuite(
-            'tests/coverage.txt',
             package='collective.mcp',
             optionflags=OPTIONFLAGS,
             test_class=TestCase),

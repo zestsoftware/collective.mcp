@@ -28,10 +28,6 @@ You can now access the control panel by accessing
 not added any page yet, you will get a message telling you that you
 can not manage anything.
 
-    >>> self.browser.open('http://nohost/plone/control_panel/')
-    >>> "There is nothing you can manage." in self.browser.contents
-    True
-
     >>> from collective.mcp import categories, pages
     >>> categories
     []

@@ -9,7 +9,6 @@
 
   <!-- -*- extra stuff goes here -*- -->
   <include package=".browser" />
-  <include package=".samples" />
 
   <cmf:registerDirectory name="collective_mcp"/>
 

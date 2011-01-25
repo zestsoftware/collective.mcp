@@ -1,0 +1,77 @@
+Some extras tests for the SortedList class, mainly about complete
+reordering of the list.
+
+    >>> from collective.mcp.sorted_list import SortedList, SortableObj
+
+Scenarios when we can not place the object correctly
+----------------------------------------------------
+
+First case: object 'a' must be placed before object 'c'. Object 'b'
+wants to be displayed before 'a' and after 'c'.
+In this case, the object is just appended at the end of the list.
+    >>> l = SortedList()
+    >>> l.add(SortableObj('a', before='c'))
+    >>> l.add(SortableObj('c'))
+    >>> l
+    [<Sortable object: a>, <Sortable object: c>]
+    >>> l.add(SortableObj('b', before = 'a', after = 'c'))
+    >>> l
+    [<Sortable object: a>, <Sortable object: c>, <Sortable object: b>]
+
+Second case: 'a' is before 'b', 'b' is before 'c'. 'x' wants to be
+after 'c' and before 'a'.
+It will be placed at the end.
+
+    >>> l = SortedList()
+    >>> l.add(SortableObj('a', before='b'))
+    >>> l.add(SortableObj('b', before='c'))
+    >>> l.add(SortableObj('c'))
+    >>> l
+    [<Sortable object: a>,
+     <Sortable object: b>,
+     <Sortable object: c>]
+
+    >>> l.add(SortableObj('x', before = 'a', after = 'c'))
+    >>> l
+    [<Sortable object: a>,
+     <Sortable object: b>,
+     <Sortable object: c>,
+     <Sortable object: x>]
+
+Scenarios where the list is changed
+-----------------------------------
+
+The first elements added are 'e', 'f', 'g', 'h'.
+
+    >>> l = SortedList()
+    >>> l.add(SortableObj('e', before='f'))
+    >>> l.add(SortableObj('f', before='h'))
+    >>> l.add(SortableObj('g'))
+    >>> l.add(SortableObj('h', after='g'))
+    >>> l
+    [<Sortable object: e>,
+     <Sortable object: f>,
+     <Sortable object: g>,
+     <Sortable object: h>]
+
+And a second list 'a', 'b', 'c'.
+
+    >>> l.add(SortableObj('a', before='b'))
+    >>> l.add(SortableObj('c', after='b'))
+    >>> l.add(SortableObj('b'))
+    >>> l
+    [<Sortable object: e>, <Sortable object: f>,
+     <Sortable object: g>, <Sortable object: h>,
+     <Sortable object: a>, <Sortable object: b>,
+     <Sortable object: c>]
+
+And to finish, we add an object 'd' that needs to be
+before 'e' and after 'c'. So the two previous lists
+will be replaced correctly.
+
+    >>> l.add(SortableObj('d', after='c', before='e'))
+    >>> l
+    [<Sortable object: a>, <Sortable object: b>,
+     <Sortable object: c>, <Sortable object: d>,
+     <Sortable object: e>, <Sortable object: f>,
+     <Sortable object: g>, <Sortable object: h>]
