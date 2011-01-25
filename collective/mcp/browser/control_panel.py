@@ -12,13 +12,12 @@ class MacControlPanel(BrowserView):
                           self.__name__)
     
     def filter_pages(self):
-        """ Provides a dictionnary of pages that are
+        """ Provides a list of pages that are
         viewable by the user.
-
-        Returns a dictionnary where the keys are the
-        pages ids and values the page objects initialized.
         """
-        pages_dict = {}
+        filtered_pages = []
+        used_ids = []
+
         for pclass in pages:
             try:
                 page = self.context.restrictedTraverse(
@@ -30,11 +29,10 @@ class MacControlPanel(BrowserView):
                 continue
 
             page.view = self
-
             try:
                 page_id = page.widget_id
 
-                if page_id in pages_dict:
+                if page_id in used_ids:
                     msg = "widget_id '%s' is already used. Choose another one."
                     logger.warn(msg % page_id)
                     continue
@@ -43,28 +41,34 @@ class MacControlPanel(BrowserView):
                     logger.info('Page "%s" not visible' % pclass.zcml_id)
                     continue
 
-                pages_dict[page_id] = page
+                filtered_pages.append(page)
+                used_ids.append(page_id)
+
             except AttributeError:
                 logger.warn("You did not provide 'widget_id' for class %s" % pclass)
 
-        return pages_dict
+        return filtered_pages
 
     def __call__(self):
-        pages_dict = self.filter_pages()
+        pages = self.filter_pages()
+
         form = self.request.form
         requested_id = form.get('widget_id', None)
 
-        if requested_id in pages_dict:
-            # Ok we'll just render the page requested.
-            page = pages_dict[requested_id]
-            rendered = page()
-            
-            # There is a special mode for sub-page called 'back'.
-            # In this mode, the page is not shown but the main menu.
-            if page.mode != 'back':
-                self.sub_page = page
-                self.sub_page_rendered = rendered
-                return self.index()
+        for page in pages:            
+            if requested_id == page.widget_id:
+                # Ok we'll just render the page requested.
+                rendered = page()
+
+                # There is a special mode for sub-page called 'back'.
+                # In this mode, the page is not shown but the main menu.
+                if page.mode != 'back':
+                    self.sub_page = page
+                    self.sub_page_rendered = rendered
+                    return self.index()
+
+                # Well, no need to look for other pages.
+                break
 
         # No page (or an incorrect) page was requested, so we
         # render the default view with all the icons.
@@ -75,7 +79,7 @@ class MacControlPanel(BrowserView):
         # - removing the empty categories
         categories_tmp = {}
 
-        for page_id, page in pages_dict.items():
+        for page in pages:
             page_cat = page.category
             if not page_cat in categories_tmp:
                 categories_tmp[page_cat] = []
