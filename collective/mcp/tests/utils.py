@@ -60,7 +60,7 @@ class McpHtmlParser(HTMLParser):
         print 'Objects'
         for o in self.multi_objects:
             print '%s %s (%s)' % (
-                o.get('current', False) and '>>>' or '   ',
+                o.get('current', False) and '-->' or '   ',
                 o.get('text', 'No text'),
                 o.get('href', 'No href'))
 
@@ -146,8 +146,8 @@ class McpHtmlParser(HTMLParser):
         attrs = dict(attrs)
 
         if  tag == 'img':
-            if self.in_buttons and self.multi_objects_buttons:
-                self.multi_objects_buttons[-1]['img'] = attrs.get('src', '')
+            if self.in_buttons and self.multi_object_buttons:
+                self.multi_object_buttons[-1]['img'] = attrs.get('src', '')
             elif self.in_menu and self.home_page and self.home_page[-1]['pages']:
                 self.home_page[-1]['pages'][-1]['icon'] = attrs.get('src', '')
 
@@ -159,8 +159,8 @@ class McpHtmlParser(HTMLParser):
         if tag['tag'] == 'a':
             if self.in_objects and self.multi_objects:
                 self.multi_objects[-1]['text'] = data
-            elif self.in_buttons and self.multi_objects_buttons:
-                self.multi_objects_buttons[-1]['text'] = data
+            elif self.in_buttons and self.multi_object_buttons:
+                self.multi_object_buttons[-1]['text'] = data
 
         if tag['tag'] == 'span':
             if self.in_menu:
