@@ -3,6 +3,7 @@ import logging
 from Products.Five import BrowserView
 
 from collective.mcp import categories, pages
+from collective.mcp import McpMessageFactory as _
 
 logger = logging.getLogger('collective.multimodeview')
 

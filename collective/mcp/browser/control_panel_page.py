@@ -1,3 +1,5 @@
+from collective.mcp import McpMessageFactory as _
+
 from collective.multimodeview.browser import MultiModeViewlet
 
 class ControlPanelPage(MultiModeViewlet):

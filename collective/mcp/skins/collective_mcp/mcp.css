@@ -96,7 +96,6 @@
 
 #control_panel_header li.control_panel_home a {
     background: #929292 url('mcp_menu_home_bg.gif') no-repeat center center !important;
-    padding-right: 30px;
 }
 
 #control_panel_header li.control_panel_home a:hover {
@@ -104,7 +103,9 @@
 }
 
 #control_panel_header li.control_panel_home a span {
-    display: none;
+    visibility: hidden;
+    display: inline-block;
+    max-width: 20px;
 }
 
 /* The content part of the control panel */
