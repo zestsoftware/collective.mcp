@@ -299,6 +299,7 @@ The image now appears in the control panel and the title is also displayed::
 
     >>> '<img src="++resource++collective_mcp_home.png"' in self.browser.contents
     True
+
     >>> '<span>Home message</span>' in self.browser.contents
     True
 
@@ -311,6 +312,7 @@ see our form instead::
 
     >>> '<img src="++resource++collective_mcp_home.png"' in self.browser.contents
     False
+
     >>> '<label for="msg">Message:</label>' in self.browser.contents
     True
 
@@ -569,7 +571,7 @@ is empty and you get a message telling you to add some notes::
     True
 
 ``collective.mcp`` automatically added a '+' and a '-' button that
-will trigger the ``add`` and `delete` moes of your new page.
+will trigger the ``add`` and `delete` modes of your new page.
 We'll click on the ``add`` button that will display the form to create
 a note::
 
@@ -635,3 +637,4 @@ four extra documentations there::
 
  - defect.rst - some examples of what you should not do.
 
+ - theming.rst - some hints for theming the control panel.

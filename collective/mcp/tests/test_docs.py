@@ -103,6 +103,11 @@ def test_suite():
             package='collective.mcp',
             optionflags=OPTIONFLAGS,
             test_class=TestCase),
+        ztc.FunctionalDocFileSuite(
+            'doc/theming.rst',
+            package='collective.mcp',
+            optionflags=OPTIONFLAGS,
+            test_class=TestCase),
         ])
 
 if __name__ == '__main__':

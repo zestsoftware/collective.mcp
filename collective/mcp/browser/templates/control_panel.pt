@@ -49,8 +49,7 @@
         <div id="control_panel_content">
           <div tal:condition="sub_page_rendered"
                id="subpage"
-               tal:define="multi_objects sub_page/multi_objects|nothing"
-               tal:attributes="class python: multi_objects and 'right_column' or None"
+               tal:attributes="class sub_page/page_classes"
                tal:content="structure sub_page_rendered" />
           
           <div id="objects_list"

@@ -33,6 +33,9 @@ class McpHtmlParser(HTMLParser):
         #  {...}]
         self.home_page = []
 
+        # Classes applied on the #subpage div
+        self.subpage_classes = ''
+
         # List of nodes encountered
         self.path = []
 
@@ -89,6 +92,7 @@ class McpHtmlParser(HTMLParser):
                 self.in_control_panel_content = True
             elif tag_id == 'subpage':
                 self.subpage_rendered = True
+                self.subpage_classes = tag_classes
             elif tag_id == 'objects_list':
                 self.in_objects_list = True
 

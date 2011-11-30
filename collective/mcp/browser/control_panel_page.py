@@ -45,6 +45,9 @@ class ControlPanelPage(MultiModeViewlet):
     extra_js = []
     extra_css = []
 
+    # Defines a list of CSS class that will be added to the subpage container.
+    sub_page_classes = []
+
     @property
     def cancel_mode(self):
         if 'back' in self.modes:
@@ -90,3 +93,18 @@ class ControlPanelPage(MultiModeViewlet):
         """
         link = super(ControlPanelPage, self).make_link(mode, extra_params)
         return link.replace('#%s' % self.widget_id, '')
+
+    def page_classes(self):
+        """ Generates the CSS classes subpage container..
+        """
+        classes = self.sub_page_classes[:]
+
+        widget_id = self.request.get('widget_id', None)
+        if widget_id:
+            classes.append('mcp_widget_%s' % widget_id)
+
+        if self.multi_objects:
+            classes.append('right_column')
+
+        return ' '.join(classes)
+
