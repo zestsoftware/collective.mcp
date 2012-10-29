@@ -182,290 +182,34 @@
 }
 
 #control_panel_content #objects_list .buttons {
-    margin-top: 10px;
     border-top: 1px solid #CECECE;
 }
 
 #control_panel_content #objects_list .buttons li {
-    display: inline;
+    display: inline-block;
+    float: left;
+    margin-right: 1px;
 }
 
-#control_panel_content #objects_list .buttons a {
-    background-color: #929292;
-    border-right: 1px solid #CECECE;
-    padding: 2px 5px;
-    text-align: center;
-    text-decoration: none;
-    color: #000000;
-    font-weight: bold;
-}
-
-#control_panel_content #objects_list .buttons a:hover {
-    color: #FFFFFF;
-    background-color: #7b7b7b;
-}
-
-#control_panel_content input[type=text],
-#control_panel_content input[type=password],
-#control_panel_content select,
-#control_panel textarea {
-    width: 100%;
-}
-
-#control_panel_content input[type=text],
-#control_panel_content input[type=password] {
-    font-size: 120%;
-}
-
-#control_panel_content .right_column {
-    float: right;
-    width: 70%;
-    padding: 0px 10px 0px 0px !important;
-}
-
-#control_panel_content #subpage {
-    padding: 0px 10px;
-}
-
-#control_panel_content #subpage .field {
-    margin-bottom: 15px;
-}
-
-#control_panel_content .fieldRequired {
-    padding: 0 0 0 8px;
-}
-
-#control_panel_content input[type=submit] {
-    font-size: 90%;
-    padding: 3px 10px;
-    margin-bottom: 15px;
-    color: #000000;
-}
-
-#control_panel_content fieldset {
-    padding: 5px 10px;
-    margin-bottom: 10px;
-}
-
-#control_panel_content fieldset legend {
-    font-weight: bold;
-    padding: 0px 10px;
-}
-
-#control_panel_content table.listing {
-    margin: 10px;
-}
-
-#control_panel_content table.listing td {
-    padding: 4px 10px;
-}
-#control_panel_content table.listing th{
-    padding: 4px 7px;
-}/* We override some stuff to avoid conflicts wih already existing CSS code. */
-#control_panel_container {
-    border: 1px solid #CECECE;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    margin-top: 15px;
-    padding: 0px;
-}
-
-#control_panel_container * {
-    margin: 0px;
-    padding: 0px;
-}
-
-#control_panel_content ul,
-#control_panel_header {
-    list-style-type: none !important;
-    list-style-image: none !important;
-}
-
-
-#control_panel_container .spacer {
+#control_panel_content #objects_list .buttons li.last {
     clear: both;
 }
 
-
-/* The header part of the control panel (with the navigation)*/
-#control_panel_header {
-    border-bottom: 1px solid #CECECE;
-    background-color: #CECECE;
-    padding: 10px;
-}
-
-#control_panel_header li {
-    display: inline;
-}
-
-#control_panel_header li a {
-    color: #000000;
-    text-decoration: none;
-    font-weight: bold;
-
-    margin: 0px;
-}
-
-#control_panel_header li a:hover {
-    color: #FFFFFF;
-    text-decoration: none;
-}
-
-#control_panel_header .item a {
-    border: 1px solid #7a7a7a;
-    border-right: none;
-    border-left: none;
-
-    background-color: #929292;
-    padding: 2px 5px;
-}
-
-#control_panel_header li.first_item a {
-    border-left: 1px solid #7a7a7a;
-
-    -moz-border-radius-bottomleft: 5px;
-    -webkit-bottom-left-border-radius: 5px;
-    border-bottom-left-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    -webkit-top-left-border-radius: 5px;
-    border-top-left-radius: 5px;
-}
-
-#control_panel_header li.last_item a {
-    border-right: 1px solid #7a7a7a;
-
-    -moz-border-radius-bottomright: 5px;
-    -webkit-bottom-right-border-radius: 5px;
-    border-bottom-right-radius: 5px;
-    -moz-border-radius-topright: 5px;
-    -webkit-top-right-border-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-#control_panel_header li.item a {
-    background: #929292 url('mcp_menu_sep_bg.gif') no-repeat left center;
-    padding-left: 15px;
-
-    -moz-box-shadow: 3px 3px 3px #929292;
-    -webkit-box-shadow: 3px 3px 3px #929292;
-    box-shadow: 3px 3px 3px #929292;
-}
-
-#control_panel_header li.item.first_item a{
-    background-image: none;
-    padding-left: 5px;
-}
-
-#control_panel_header li.control_panel_home a {
-    background: #929292 url('mcp_menu_home_bg.gif') no-repeat center center !important;
-}
-
-#control_panel_header li.control_panel_home a:hover {
-    background: #929292 url('mcp_menu_home_hover_bg.gif') no-repeat center center !important;
-}
-
-#control_panel_header li.control_panel_home a span {
-    visibility: hidden;
-    display: inline-block;
-    max-width: 20px;
-}
-
-/* The content part of the control panel */
-
-/* The base view with all the icons */
-
-#control_panel_content > ul.menu {
-    margin-top: 10px;
-}
-
-#control_panel_content > ul.menu > li > span {
-    display: block;
-    border-bottom: 1px solid #CECECE;
-    padding-left: 10px;
-    font-weight: bold;
-}
-
-#control_panel_content > ul.menu > li > ul > li {
-    padding: 2px 5px;
-    float: left;
-    margin-bottom: 10px;
-}
-
-#control_panel_content > ul.menu > li > ul > li > a {
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
-    color: #505050;
-    text-decoration: none;
-    text-align: center;
-    display: block;
-    width: 100px;
-    padding: 5px;
-}
-
-#control_panel_content > ul.menu > li > ul > li > a:hover {
-    background-color: #ECECEC;
-    color: #000000;
-}
-
-#control_panel_content > ul.menu > li > ul > li span,
-#control_panel_content > ul.menu > li > ul > li img {
-    display: block;
-    margin: 1px auto;
-}
-
-/* The left menu for pages to edit multiple objects.*/
-
-#control_panel_content #objects_list {
-    float: right;
-    width: 25%;
-    border: 1px solid #CECECE;
-    margin: 10px 15px 10px 5px;
-    overflow: hidden;
-}
-
-#control_panel_content #objects_list .objects {
-    min-height: 200px;
-}
-
-#control_panel_content #objects_list .objects a {
-    color: #000000;
-    text-decoration: none;
-    display: block;
-}
-
-#control_panel_content #objects_list .objects li.current a {
-    background-color: #9ca0a2;
-    font-weight: bold;
-}
-
-#control_panel_content #objects_list .objects a:hover {
-    background-color: #9fb0b8;
-}
-
-#control_panel_content #objects_list .buttons {
-    margin-top: 10px;
-    border-top: 1px solid #CECECE;
-}
-
-#control_panel_content #objects_list .buttons li {
-    display: inline;
-}
-
 #control_panel_content #objects_list .buttons a {
     background-color: #929292;
-    border-right: 1px solid #CECECE;
-    padding: 2px 5px;
-    text-align: center;
-    text-decoration: none;
     color: #000000;
     font-weight: bold;
+
+    display: inline-block;
 }
 
 #control_panel_content #objects_list .buttons a:hover {
     color: #FFFFFF;
     background-color: #7b7b7b;
+}
+
+#control_panel_content #objects_list .buttons a img {
+    margin: 3px;
 }
 
 #control_panel_content input[type=text],
