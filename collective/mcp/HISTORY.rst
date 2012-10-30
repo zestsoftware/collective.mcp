@@ -4,6 +4,8 @@ Changelog
 0.2 (unreleased)
 ----------------
 
+ - CSS fixes. [vincent]
+
  - better display of the buttons in the left panel. [vincent]
 
  - Added possibility to set custom CSS class to the subpage. By
