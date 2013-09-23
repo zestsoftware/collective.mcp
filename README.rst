@@ -17,6 +17,13 @@ This product does not magically create the pages for your site, it
 only provides some API to create them, as we'll see later in this
 README.
 
+
+Compatibility
+=============
+
+This has been tested with Plone 3.3.5.
+
+
 Installing collective.mcp
 =========================
 
