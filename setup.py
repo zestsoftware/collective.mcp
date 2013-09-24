@@ -9,13 +9,12 @@ def get_file_contents(filename):
     this_file.close()
     return contents
 
-version = get_file_contents('collective/mcp/version.txt')
 history = get_file_contents('CHANGES.rst')
 readme = get_file_contents('README.rst')
 long = "%s\n\n\n%s" % (readme, history)
 
 setup(name='collective.mcp',
-      version=version,
+      version='0.4.dev0',
       description="Macish Control Panel for Plone.",
       long_description=long,
       # Get more strings from
@@ -26,7 +25,7 @@ setup(name='collective.mcp',
           "Programming Language :: Python",
           "Programming Language :: Python :: 2.4",
           ],
-      keywords='control panel',
+      keywords='mac control panel',
       author='Zest Software',
       author_email='info@zestsoftware.nl',
       url='https://github.com/zestsoftware/collective.mcp',
