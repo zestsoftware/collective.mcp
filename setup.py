@@ -11,9 +11,8 @@ def get_file_contents(filename):
 
 version = get_file_contents('collective/mcp/version.txt')
 history = get_file_contents('CHANGES.rst')
-roadmap = get_file_contents('collective/mcp/ROADMAP.rst')
 readme = get_file_contents('README.rst')
-long = "%s\n\n\n%s\n\n%s" % (readme, roadmap, history)
+long = "%s\n\n\n%s" % (readme, history)
 
 setup(name='collective.mcp',
       version=version,
