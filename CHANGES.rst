@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.4 (unreleased)
+0.4 (2013-09-24)
 ----------------
 
 - Moved to github.  Cleanup a bit.
