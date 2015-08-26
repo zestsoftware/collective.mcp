@@ -1,21 +1,15 @@
-import unittest
-import doctest
-
-#from zope.testing import doctestunit
-#from zope.component import testing
-from Testing import ZopeTestCase as ztc
-
-import transaction
 from Products.Five import fiveconfigure, zcml
 from Products.PloneTestCase import PloneTestCase as ptc
 from Products.PloneTestCase.layer import PloneSite
-ptc.setupPloneSite()
-
+from Testing import ZopeTestCase as ztc
+from collective.mcp.sorted_list import SortedList
 import collective.mcp
 import collective.multimodeview
+import doctest
+import transaction
+import unittest
 
-from collective.mcp.sorted_list import SortedList
-
+ptc.setupPloneSite()
 OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)
 

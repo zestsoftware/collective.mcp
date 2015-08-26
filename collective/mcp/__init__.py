@@ -1,8 +1,7 @@
-import logging
+from collective.mcp.category import Category
+from collective.mcp.sorted_list import SortedList
 from zope.i18nmessageid import MessageFactory
-
-from category import Category
-from sorted_list import SortedList
+import logging
 
 logger = logging.getLogger('collective.mcp')
 McpMessageFactory = MessageFactory(u'collective.mcp')
@@ -22,7 +21,7 @@ def register_category(cat):
 
 
 def register_page(p):
-    if not p.category in categories:
+    if p.category not in categories:
         logger.info('There is no "%s" category registered' % p.category)
     pages.add(p)
 
