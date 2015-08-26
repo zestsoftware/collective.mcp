@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-02-21 14:34+0000\n"
+"POT-Creation-Date: 2015-08-26 21:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgid "label_home"
 msgstr ""
 
 #. Default: "There is nothing you can manage."
-#: ./browser/templates/control_panel.pt:124
+#: ./browser/templates/control_panel.pt:123
 msgid "msg_no_pages"
 msgstr ""
 
