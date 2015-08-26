@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 import os
 
 
-def get_file_contents(filename):
-    file_path = os.path.join(filename)
+def get_file_contents(*filenames):
+    file_path = os.path.join(*filenames)
     this_file = open(file_path)
     contents = this_file.read().strip()
     this_file.close()
@@ -11,12 +11,13 @@ def get_file_contents(filename):
 
 history = get_file_contents('CHANGES.rst')
 readme = get_file_contents('README.rst')
-long = "%s\n\n\n%s" % (readme, history)
+main = get_file_contents('collective', 'mcp', 'doc', 'main.rst')
+long_description = "%s\n\n\n%s\n\n\n%s" % (readme, main, history)
 
 setup(name='collective.mcp',
       version='0.5.dev0',
       description="Macish Control Panel for Plone.",
-      long_description=long,
+      long_description=long_description,
       # Get more strings from
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[

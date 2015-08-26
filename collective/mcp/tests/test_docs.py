@@ -82,7 +82,7 @@ class TestCase(ptc.PloneTestCase):
 def test_suite():
     return unittest.TestSuite([
         ztc.FunctionalDocFileSuite(
-            '../../README.rst',
+            'doc/main.rst',
             package='collective.mcp',
             optionflags=OPTIONFLAGS,
             test_class=TestCase),
@@ -112,6 +112,3 @@ def test_suite():
             optionflags=OPTIONFLAGS,
             test_class=TestCase),
     ])
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
