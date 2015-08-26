@@ -1,6 +1,7 @@
 Changelog
 =========
 
+
 0.5 (unreleased)
 ----------------
 
@@ -20,7 +21,7 @@ Changelog
 - better display of the buttons in the left panel. [vincent]
 
 
-0.2 (15/12/2011)
+0.2 (2011-12-15)
 ----------------
 
 - Added possibility to set custom CSS class to the subpage.  By
@@ -28,8 +29,8 @@ Changelog
   id. [vincent]
 
 
-0.1  (25/02/2011)
------------------
+0.1 (2011-02-25)
+----------------
 
 - Initial release.
   [vincent]
