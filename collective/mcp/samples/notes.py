@@ -1,5 +1,6 @@
 from collective.mcp.browser.control_panel_page import ControlPanelPage
 
+
 class Notes(ControlPanelPage):
     category = 'settings'
     zcml_id = 'collective_mcp_notes'
@@ -11,7 +12,7 @@ class Notes(ControlPanelPage):
                      'error_msg': 'Impossible to add a note: please correct the form',
                      'submit_label': 'Add note'},
              'edit': {'success_msg': 'The note has been edited',
-                     'submit_label': 'Edit note'},
+                      'submit_label': 'Edit note'},
              'delete': {'success_msg': 'The note has been deleted',
                         'submit_label': 'Delete note'}
              }
@@ -20,7 +21,8 @@ class Notes(ControlPanelPage):
 
     @property
     def notes_view(self):
-        return self.context.restrictedTraverse('@@mcp_multimodeview_notes_sample')
+        return self.context.restrictedTraverse(
+            '@@mcp_multimodeview_notes_sample')
 
     def list_objects(self):
         notes = self.notes_view.get_notes()
@@ -95,6 +97,7 @@ class Notes(ControlPanelPage):
         self.notes_view.delete_note(self._get_note_id())
         self.request.form['obj_id'] = None
 
+
 class NotesDisplay(Notes):
     """ More or less the same than the previous one, except it
     has an extra 'display' mode.
@@ -107,7 +110,7 @@ class NotesDisplay(Notes):
                      'error_msg': 'Impossible to add a note: please correct the form',
                      'submit_label': 'Add note'},
              'edit': {'success_msg': 'The note has been edited',
-                     'submit_label': 'Edit note'},
+                      'submit_label': 'Edit note'},
              'display': {'success_msg': 'Display zones for the note have been updated',
                          'submit_label': 'Set display zones'},
              'delete': {'success_msg': 'The note has been deleted',
@@ -132,7 +135,7 @@ class NotesDisplay(Notes):
         return zones
 
     def _check_display_form(self):
-	  return True
+        return True
 
     def _process_display_form(self):
         zones = self.request.form.get('zones', [])
@@ -144,6 +147,7 @@ class NotesDisplay(Notes):
         self.notes_view.set_display_zones(
             self._get_note_id(),
             zones)
+
 
 class NotesDisplayModeSwitch(NotesDisplay):
     """ Same principle than the previous one.
@@ -160,7 +164,7 @@ class NotesDisplayModeSwitch(NotesDisplay):
                      'cancel_mode': 'add',
                      'success_mode': 'display'},
              'edit': {'success_msg': 'The note has been edited',
-                     'submit_label': 'Edit note'},
+                      'submit_label': 'Edit note'},
              'display': {'success_msg': 'Display zones for the note have been updated',
                          'submit_label': 'Set display zones'},
              'delete': {'success_msg': 'The note has been deleted',

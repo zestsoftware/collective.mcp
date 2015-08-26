@@ -1,5 +1,6 @@
 from collective.mcp.browser.control_panel_page import ControlPanelPage
 
+
 class HomeMessage(ControlPanelPage):
     category = 'settings'
     zcml_id = 'collective_mcp_home_message'
@@ -14,7 +15,8 @@ class HomeMessage(ControlPanelPage):
 
     @property
     def notes_view(self):
-        return self.context.restrictedTraverse('@@mcp_multimodeview_notes_sample')
+        return self.context.restrictedTraverse(
+            '@@mcp_multimodeview_notes_sample')
 
     def _check_default_form(self):
         return True
@@ -23,4 +25,3 @@ class HomeMessage(ControlPanelPage):
         self.notes_view.set_home_message(
             self.request.form.get('msg', ''))
         return 'back'
-    

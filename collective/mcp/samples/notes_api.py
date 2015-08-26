@@ -1,6 +1,7 @@
 from collective.multimodeview.samples.notes_view import NotesView
 from persistent.dict import PersistentDict
 
+
 class McpNotesView(NotesView):
     """ Provides some extra actions than the one defined
     in multimodeview.

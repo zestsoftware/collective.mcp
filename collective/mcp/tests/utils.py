@@ -1,5 +1,6 @@
 from HTMLParser import HTMLParser
 
+
 class McpHtmlParser(HTMLParser):
     """ The goal of this parser is to
     extract the usefull part of the browser contents:
@@ -72,7 +73,7 @@ class McpHtmlParser(HTMLParser):
         for b in self.multi_object_buttons:
             print ' - %s (%s)' % (
                 b.get('img', 'no image'),
-                b.get('href', 'no href'))                      
+                b.get('href', 'no href'))
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -82,7 +83,7 @@ class McpHtmlParser(HTMLParser):
         self.path.append({'tag': tag,
                           'id': tag_id,
                           'class': tag_classes})
-        
+
         if tag == 'div':
             if tag_id == 'control_panel_container':
                 self.in_control_panel = True
@@ -108,15 +109,16 @@ class McpHtmlParser(HTMLParser):
             if self.in_objects:
                 current = 'current' in tag_classes
                 self.multi_objects.append({'current': current})
-                
+
         if tag == 'a':
             if self.in_objects and self.multi_objects:
                 self.multi_objects[-1]['href'] = attrs.get('href', '')
             elif self.in_buttons:
                 self.multi_object_buttons.append(
-                    {'href': attrs.get('href', '')})                
+                    {'href': attrs.get('href', '')})
             elif self.in_menu and self.home_page:
-                self.home_page[-1]['pages'].append({'href': attrs.get('href', '')})
+                self.home_page[-1]['pages'].append(
+                    {'href': attrs.get('href', '')})
 
     def handle_endtag(self, tag):
         if not self.path:
@@ -145,11 +147,11 @@ class McpHtmlParser(HTMLParser):
                 self.in_buttons = False
             if tag_classes == 'menu' and self.in_control_panel_content:
                 self.in_menu = False
-                
+
     def handle_startendtag(self, tag, attrs):
         attrs = dict(attrs)
 
-        if  tag == 'img':
+        if tag == 'img':
             if self.in_buttons and self.multi_object_buttons:
                 self.multi_object_buttons[-1]['img'] = attrs.get('src', '')
             elif self.in_menu and self.home_page and self.home_page[-1]['pages']:
@@ -170,5 +172,5 @@ class McpHtmlParser(HTMLParser):
             if self.in_menu:
                 if 'spacer' in tag['class']:
                     self.home_page.append({'title': data, 'pages': []})
-                elif  self.home_page and self.home_page[-1]['pages']:
+                elif self.home_page and self.home_page[-1]['pages']:
                     self.home_page[-1]['pages'][-1]['title'] = data

@@ -17,6 +17,7 @@ import collective.multimodeview
 OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)
 
+
 def test_suite():
     return unittest.TestSuite([
         ztc.ZopeDocFileSuite(
@@ -30,7 +31,7 @@ def test_suite():
         doctest.DocTestSuite(
             module='collective.mcp.sorted_list',
             optionflags=OPTIONFLAGS),
-        ])
+    ])
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

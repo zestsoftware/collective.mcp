@@ -7,11 +7,12 @@ from collective.mcp import McpMessageFactory as _
 
 logger = logging.getLogger('collective.multimodeview')
 
+
 class MacControlPanel(BrowserView):
     def base_url(self):
         return '%s/%s' % (self.context.absolute_url(),
                           self.__name__)
-    
+
     def filter_pages(self):
         """ Provides a list of pages that are
         viewable by the user.
@@ -46,7 +47,9 @@ class MacControlPanel(BrowserView):
                 used_ids.append(page_id)
 
             except AttributeError:
-                logger.warn("You did not provide 'widget_id' for class %s" % pclass)
+                logger.warn(
+                    "You did not provide 'widget_id' for class %s" %
+                    pclass)
 
         return filtered_pages
 
@@ -56,7 +59,7 @@ class MacControlPanel(BrowserView):
         form = self.request.form
         requested_id = form.get('widget_id', None)
 
-        for page in pages:            
+        for page in pages:
             if requested_id == page.widget_id:
                 # Ok we'll just render the page requested.
                 rendered = page()

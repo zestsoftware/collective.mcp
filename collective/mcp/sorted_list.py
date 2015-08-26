@@ -1,9 +1,11 @@
 import logging
 logger = logging.getLogger('collective.mcp')
 
+
 class SortableObj(object):
     """ That class is only here for testing purpose.
     """
+
     def __init__(self, obj_id, before=None, after=None):
         self.id = obj_id
         self.before = before
@@ -11,12 +13,14 @@ class SortableObj(object):
 
     def __repr__(self):
         return '<Sortable object: %s>' % self.id
-    
+
+
 class SortedList(list):
     """ This type of list adds a 'add' method, that will insert
     the object at the correct position, based on 'before'/'after'
     attributes of the object.
     """
+
     def __init__(self, *args, **kwargs):
         if 'id_attr' in kwargs:
             id_attribute = kwargs['id_attr']
@@ -94,7 +98,7 @@ class SortedList(list):
 
         after_position = None
         before_position = None
-        
+
         for index, o in enumerate(self):
             o_id = getattr(o, self.id_attribute)
 
@@ -107,8 +111,8 @@ class SortedList(list):
             # Once a before_position has been found, it is
             # never changed (which is logical)
             if before_position is None and \
-               (o.after == obj_id or \
-                obj.before == o_id):
+               (o.after == obj_id or
+                    obj.before == o_id):
                 before_position = index
 
         if after_position is None and \
@@ -118,12 +122,12 @@ class SortedList(list):
             self.append(obj)
 
         elif after_position is None and \
-             before_position is not None:
+                before_position is not None:
             # We place it just before the asked position.
             self.insert(before_position, obj)
 
         elif before_position is None and \
-            after_position is not None:
+                after_position is not None:
             # Ok, we place it just after the position we found.
             self.insert(after_position, obj)
 
@@ -150,7 +154,7 @@ class SortedList(list):
                 logger.warn(msg % (obj, conflicts))
                 self.append(obj)
                 return
-            
+
             # Now what we will do is place objects in the 'all_before' list
             # just before the first element of 'all_after'.
             position = self.find_first_element(all_after)
@@ -158,12 +162,12 @@ class SortedList(list):
             to_delete = []
             for o in sorted(all_before,
                             reverse=True,
-                            key = lambda x: self.index(x)):
+                            key=lambda x: self.index(x)):
                 self.remove(o)
                 self.insert(position, o)
 
     def _find_all(self, objects, match):
-        """  
+        """
         """
         path = objects
         found = []
@@ -212,8 +216,8 @@ class SortedList(list):
             o_id = getattr(o, self.id_attribute)
 
             return o.before == current_id or \
-                   current.after == o_id
-            
+                current.after == o_id
+
         return self._find_all(objects, compare)
 
     def find_all_after(self, objects):
@@ -246,8 +250,8 @@ class SortedList(list):
             o_id = getattr(o, self.id_attribute)
 
             return o.after == current_id or \
-                   current.before == o_id
-            
+                current.before == o_id
+
         return self._find_all(objects, compare)
 
     def find_first_element(self, objects):

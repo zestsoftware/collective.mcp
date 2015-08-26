@@ -19,10 +19,11 @@ from collective.mcp.sorted_list import SortedList
 OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)
 
+
 class TestCase(ptc.PloneTestCase):
     def __init__(self, *args, **kwargs):
         super(TestCase, self).__init__(*args, **kwargs)
-        
+
         from Products.Five.testbrowser import Browser
         self.browser = Browser()
 
@@ -37,7 +38,7 @@ class TestCase(ptc.PloneTestCase):
         self.login_as_user(
             ptc.portal_owner,
             ptc.default_password)
-    
+
     class layer(PloneSite):
 
         @classmethod
@@ -67,6 +68,7 @@ class TestCase(ptc.PloneTestCase):
         # his hack allows us to get the traceback when the getting a
         # 500 error when using the browser.
         self.portal.error_log._ignored_exceptions = ()
+
         def raising(self, info):
             import traceback
             traceback.print_tb(info[2])
@@ -75,6 +77,7 @@ class TestCase(ptc.PloneTestCase):
         from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
         SiteErrorLog.raising = raising
         transaction.commit()
+
 
 def test_suite():
     return unittest.TestSuite([
@@ -108,7 +111,7 @@ def test_suite():
             package='collective.mcp',
             optionflags=OPTIONFLAGS,
             test_class=TestCase),
-        ])
+    ])
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

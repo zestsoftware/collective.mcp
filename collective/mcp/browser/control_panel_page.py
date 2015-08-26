@@ -2,6 +2,7 @@ from collective.mcp import McpMessageFactory as _
 
 from collective.multimodeview.browser import MultiModeViewlet
 
+
 class ControlPanelPage(MultiModeViewlet):
     # The category the page belongs to.
     category = ''
@@ -88,7 +89,7 @@ class ControlPanelPage(MultiModeViewlet):
 
         return None
 
-    def make_link(self, mode, extra_params = None):
+    def make_link(self, mode, extra_params=None):
         """ Removes the unneeded '#widget_id' at the end of the link.
         """
         link = super(ControlPanelPage, self).make_link(mode, extra_params)
@@ -107,4 +108,3 @@ class ControlPanelPage(MultiModeViewlet):
             classes.append('right_column')
 
         return ' '.join(classes)
-

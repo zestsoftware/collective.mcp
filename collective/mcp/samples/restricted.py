@@ -4,10 +4,12 @@
 from collective.mcp.samples.notes import Notes
 from collective.mcp.samples.home_message import HomeMessage
 
+
 class HomeMessageRestricted(HomeMessage):
     zcml_id = 'collective_mcp_home_message_restricted'
     widget_id = 'collective_mcp_home_message_restricted'
     title = 'Home message (restricted to admin)'
+
 
 class HomeMessageRestrictedII(HomeMessage):
     zcml_id = 'collective_mcp_home_message_restrictedII'
@@ -15,6 +17,7 @@ class HomeMessageRestrictedII(HomeMessage):
     title = 'Home message (restricted using "permission" attribute)'
 
     view_permission = 'Manage portal'
+
 
 class HomeMessageRestrictedIII(HomeMessage):
     zcml_id = 'collective_mcp_home_message_restrictedIII'
@@ -31,6 +34,7 @@ class HomeMessageRestrictedIII(HomeMessage):
                 self.context)
         return True
 
+
 class NotesRestricted(Notes):
     zcml_id = 'collective_mcp_notes_restricted'
     widget_id = 'collective_mcp_notes_restricted'
@@ -46,7 +50,7 @@ class NotesRestricted(Notes):
 
         if self.check_permission('Manage portal'):
             modes['delete'] = {'success_msg': 'The note has been deleted',
-                           'submit_label': 'Add note'}
+                               'submit_label': 'Add note'}
         return modes
 
     @property
