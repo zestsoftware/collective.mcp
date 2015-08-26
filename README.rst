@@ -11,7 +11,7 @@ a new one decidated to the users. This will might be usefull for web
 applications based on Plone.
 
 You can see some screenshots of the product at this page:
-https://github.com/vincent-psarga/collective.mcp/wiki/Screenshots
+https://github.com/zestsoftware/collective.mcp/wiki/Screenshots
 
 This product does not magically create the pages for your site, it
 only provides some API to create them, as we'll see later in this
