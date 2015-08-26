@@ -1,18 +1,6 @@
-import unittest
-import doctest
-
-#from zope.testing import doctestunit
-#from zope.component import testing
 from Testing import ZopeTestCase as ztc
-
-import transaction
-from Products.Five import fiveconfigure, zcml
-from Products.PloneTestCase import PloneTestCase as ptc
-from Products.PloneTestCase.layer import PloneSite
-ptc.setupPloneSite()
-
-import collective.mcp
-import collective.multimodeview
+import doctest
+import unittest
 
 OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)
@@ -32,6 +20,3 @@ def test_suite():
             module='collective.mcp.sorted_list',
             optionflags=OPTIONFLAGS),
     ])
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

@@ -159,7 +159,6 @@ class SortedList(list):
             # just before the first element of 'all_after'.
             position = self.find_first_element(all_after)
             self.insert(position, obj)
-            to_delete = []
             for o in sorted(all_before,
                             reverse=True,
                             key=lambda x: self.index(x)):
@@ -179,8 +178,7 @@ class SortedList(list):
                     # We'll try to avoid recursion.
                     continue
 
-                if match(current, o) and \
-                   not o in found:
+                if match(current, o) and o not in found:
                     found.append(o)
                     path.append(o)
 

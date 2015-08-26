@@ -1,9 +1,6 @@
-import logging
-
 from Products.Five import BrowserView
-
 from collective.mcp import categories, pages
-from collective.mcp import McpMessageFactory as _
+import logging
 
 logger = logging.getLogger('collective.multimodeview')
 
@@ -85,7 +82,7 @@ class MacControlPanel(BrowserView):
 
         for page in pages:
             page_cat = page.category
-            if not page_cat in categories_tmp:
+            if page_cat not in categories_tmp:
                 categories_tmp[page_cat] = []
 
             categories_tmp[page_cat].append(page)
@@ -95,7 +92,7 @@ class MacControlPanel(BrowserView):
         self.categories = []
 
         for cat in categories:
-            if not cat.id in categories_tmp:
+            if cat.id not in categories_tmp:
                 # Well, there's no page for this category.
                 continue
 
