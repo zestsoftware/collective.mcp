@@ -15,7 +15,7 @@ main = get_file_contents('collective', 'mcp', 'doc', 'main.rst')
 long_description = "%s\n\n\n%s\n\n\n%s" % (readme, main, history)
 
 setup(name='collective.mcp',
-      version='0.5.dev0',
+      version='0.5',
       description="Macish Control Panel for Plone.",
       long_description=long_description,
       # Get more strings from
